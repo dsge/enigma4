@@ -1,3 +1,7 @@
 [gd_scene format=2]
 
 [node name="Spatial" type="Spatial"]
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.83624 )
+fov = 90.0
