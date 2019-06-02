@@ -17,6 +17,7 @@ _global_script_class_icons={
 
 config/name="enigma3"
 run/main_scene="res://Spatial.tscn"
+boot_splash/image="res://loading.png"
 config/icon="res://icon.png"
 
 [rendering]
