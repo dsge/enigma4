@@ -6,12 +6,12 @@ before_install:
   - unzip Godot_v3.1-stable_mono_x11_64.zip -d ${HOME}/godot
   - sudo ln -s ${HOME}/godot/Godot_v3.1.1-stable_mono_x11_64/Godot_v3.1.1-stable_mono_x11.64 /usr/local/bin/godot 
 script:
-  - mkdir ${HOME}/build
-  - mkdir ${HOME}/build/linux
-  - mkdir ${HOME}/build/windows
-  - godot --path ${TRAVIS_BUILD_DIR} --export "Linux/X11" ${HOME}/build/linux
-  - godot --path ${TRAVIS_BUILD_DIR} --export "Windows Desktop" ${HOME}/build/windows
-  - cd ${HOME}/build/linux
+  - mkdir ${HOME}/github-builds
+  - mkdir ${HOME}/github-builds/linux
+  - mkdir ${HOME}/github-builds/windows
+  - godot --path ${TRAVIS_BUILD_DIR} --export "Linux/X11" ${HOME}/github-builds/linux
+  - godot --path ${TRAVIS_BUILD_DIR} --export "Windows Desktop" ${HOME}/github-builds/windows
+  - cd ${HOME}/github-builds/linux
   - ls
-  - cd ${HOME}/build/windows
+  - cd ${HOME}/github-builds/windows
   - ls
