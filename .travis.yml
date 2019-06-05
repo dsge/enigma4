@@ -5,6 +5,7 @@ before_install:
   - wget https://downloads.tuxfamily.org/godotengine/3.1/mono/Godot_v3.1-stable_mono_x11_64.zip
   - unzip Godot_v3.1-stable_mono_x11_64.zip -d ${HOME}/godot
   - sudo ln -s ${HOME}/godot/Godot_v3.1.1-stable_mono_x11_64/Godot_v3.1.1-stable_mono_x11.64 /usr/local/bin/godot 
+  - sudo ln -s ${HOME}/godot/Godot_v3.1.1-stable_mono_x11_64/Godot_v3.1.1-stable_mono_x11.64 /usr/bin/godot 
 script:
   - mkdir ${HOME}/github-builds
   - mkdir ${HOME}/github-builds/linux
