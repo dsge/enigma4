@@ -1,0 +1,16 @@
+language: minimal
+dist: xenial
+before_install:
+  - apt-get update && apt-get install unzip
+  - wget https://downloads.tuxfamily.org/godotengine/3.1/mono/Godot_v3.1-stable_mono_x11_64.zip
+  - unzip Godot_v3.1-stable_mono_x11_64.zip -d ~/godot
+  - ln -s /usr/local/bin/godot ~/godot/Godot_v3.1.1-stable_mono_x11_64/Godot_v3.1.1-stable_mono_x11.64
+script:
+  - mkdir ${HOME}/build/linux
+  - mkdir ${HOME}/build/windows
+  - godot --path ${TRAVIS_BUILD_DIR} --export "Linux/X11" ${HOME}/build/linux
+  - godot --path ${TRAVIS_BUILD_DIR} --export "Windows Desktop" ${HOME}/build/windows
+  - cd ${HOME}/build/linux
+  - ls
+  - cd ${HOME}/build/windows
+  - ls
