@@ -20,6 +20,11 @@ run/main_scene="res://Spatial.tscn"
 boot_splash/image="res://loading.png"
 config/icon="res://icon.png"
 
+[mono]
+
+debugger_agent/port=55555
+debugger_agent/wait_timeout=5000
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
