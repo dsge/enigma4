@@ -13,6 +13,10 @@ public class Spatial : Godot.Spatial
         GD.Print("This is the same as overriding _Ready()... 2");
 
         AddChild(this.createFloor());
+
+        Godot.Spatial camera = GetNode<Godot.Spatial>("Camera");
+        camera.Translation = new Vector3(10f, 10f, 10f);
+        camera.LookAt(new Vector3(0, 0, 0), new Vector3(0, 1f, 0));
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
