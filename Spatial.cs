@@ -12,6 +12,18 @@ public class Spatial : Godot.Spatial
     {
         GD.Print("This is the same as overriding _Ready()... 2");
 
+        AddChild(this.createFloor());
+    }
+
+//  // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(float delta)
+    {
+        Godot.Spatial cube = GetNode<Godot.Spatial>("Cube");
+
+        cube.Rotation = new Vector3(cube.Rotation.x + delta * 2, cube.Rotation.y, cube.Rotation.z);
+    }
+
+    protected MeshInstance createFloor() {
         SurfaceTool surfaceTool = new SurfaceTool();
         surfaceTool.Begin(Mesh.PrimitiveType.TriangleFan);
         surfaceTool.AddVertex(new Vector3(1f, 0f, 0f));
@@ -20,21 +32,13 @@ public class Spatial : Godot.Spatial
         surfaceTool.AddVertex(new Vector3(0f, 0f, 0f));
         ArrayMesh arrayMesh = surfaceTool.Commit();
 
-        var tmpMesh = new MeshInstance();
+        var ret = new MeshInstance();
         var mat = new SpatialMaterial();
         var color = new Color(0.9f, 0.1f, 0.1f);
         mat.AlbedoColor = color;
-        tmpMesh.Mesh = arrayMesh;
-        tmpMesh.Scale = new Vector3(5f, 5f, 5f);
-
-        AddChild(tmpMesh);
-    }
-
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(float delta)
-    {
-        Godot.Spatial cube = GetNode<Godot.Spatial>("../Cube");
-
-        cube.Rotation = new Vector3(cube.Rotation.x + delta * 2, cube.Rotation.y, cube.Rotation.z);
+        ret.Mesh = arrayMesh;
+        ret.Scale = new Vector3(15f, 15f, 15f);
+        ret.Translation = new Vector3(-7.5f, 0, -7.5f);
+        return ret;
     }
 }
