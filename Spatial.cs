@@ -13,6 +13,7 @@ public class Spatial : Godot.Spatial
         GD.Print("This is the same as overriding _Ready()... 2");
 
         AddChild(this.createFloor());
+        AddChild(this.createPlayerCharacter());
 
         Godot.Spatial camera = GetNode<Godot.Spatial>("Camera");
         camera.Translation = new Vector3(10f, 10f, 10f);
@@ -44,8 +45,14 @@ public class Spatial : Godot.Spatial
             var spaceState = GetWorld().DirectSpaceState;
             Dictionary result = spaceState.IntersectRay(this.raycastFrom, this.raycastTo);
             if (result.Count > 0) {
-                var obj = (Godot.StaticBody)result["collider"];
-                var obj2 = obj.GetNode<Godot.Spatial>("..");
+                /*var obj = (Godot.Spatial)result["collider"];
+                var obj2 = obj.GetNode<Godot.Spatial>("..");*/
+                var obj = result["collider"];
+                if (obj is RigidBody rigidBody) {
+                    if (rigidBody.Sleeping) {
+                        rigidBody.Sleeping = false;
+                    }
+                }
                 GD.Print("hit");
             } else {
                 GD.Print("miss");
@@ -55,28 +62,67 @@ public class Spatial : Godot.Spatial
         }
     }
 
-    protected MeshInstance createFloor() {
+    protected Godot.Spatial createFloor() {
         SurfaceTool surfaceTool = new SurfaceTool();
         surfaceTool.Begin(Mesh.PrimitiveType.Triangles);
-        surfaceTool.AddVertex(new Vector3(1f, 0f, 0f));
-        surfaceTool.AddVertex(new Vector3(1f, 0f, 1f));
-        surfaceTool.AddVertex(new Vector3(0f, 0f, 1f));
-        surfaceTool.AddVertex(new Vector3(0f, 0f, 1f));
+        surfaceTool.AddVertex(new Vector3(15f, 0f, 0f));
+        surfaceTool.AddVertex(new Vector3(15f, 0f, 15f));
+        surfaceTool.AddVertex(new Vector3(0f, 0f, 15f));
+        surfaceTool.AddVertex(new Vector3(0f, 0f, 15f));
         surfaceTool.AddVertex(new Vector3(0f, 0f, 0f));
-        surfaceTool.AddVertex(new Vector3(1f, 0f, 0f));
+        surfaceTool.AddVertex(new Vector3(15f, 0f, 0f));
         ArrayMesh arrayMesh = surfaceTool.Commit();
 
-        var ret = new MeshInstance();
+        var meshInstance = new MeshInstance();
         var mat = new SpatialMaterial();
         var color = new Color(0.9f, 0.1f, 0.1f);
         mat.AlbedoColor = color;
-        ret.Mesh = arrayMesh;
-        ret.Scale = new Vector3(15f, 15f, 15f);
-        ret.Translation = new Vector3(-7.5f, 0, -7.5f);
+        meshInstance.Mesh = arrayMesh;
+        meshInstance.Translation = new Vector3(-7.5f, 0, -7.5f);
 
+        StaticBody rigidBody = new StaticBody();
+        // rigidBody.Mode = RigidBody.ModeEnum.Static;
 
-        ret.CreateConvexCollision();
+        BoxShape boxShape = new BoxShape();
+        boxShape.Extents = new Vector3(7.5f, 0.0001f, 7.5f);
+
+        CollisionShape collisionShape = new CollisionShape();
+        collisionShape.Shape = boxShape;
+
+        rigidBody.AddChild(collisionShape);
+        rigidBody.AddChild(meshInstance);
+
+        Godot.Spatial ret = new Godot.Spatial();
+
+        ret.AddChild(rigidBody);
+        //ret.Translation = new Vector3(-7.5f, 0, -7.5f);
 
         return ret;
+    }
+
+    protected RigidBody createPlayerCharacter() {
+        var packedScene = GD.Load<PackedScene>("res://gameObjects/Cylinder.tscn");
+
+        MeshInstance ret = (MeshInstance)packedScene.Instance();
+        ret.Translation = new Vector3(0, 0, 0);
+
+        RigidBody rigidBody = new RigidBody();
+
+        CylinderShape shape = new CylinderShape();
+        shape.Radius = 1f;
+        shape.Height = 2f;
+
+        CollisionShape collisionShape = new CollisionShape();
+        collisionShape.Shape = shape;
+
+        rigidBody.AddChild(collisionShape);
+
+        rigidBody.AddChild(ret);
+
+        rigidBody.Translation = new Vector3(0, 0.6f + 5f, 0);
+
+        rigidBody.Sleeping = true;
+
+        return rigidBody;
     }
 }
