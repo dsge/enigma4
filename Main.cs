@@ -2,7 +2,7 @@ using Godot;
 using System;
 using Godot.Collections;
 
-public class Spatial : Godot.Spatial
+public class Main : Godot.Spatial
 {
 
     protected Vector3 raycastFrom = Vector3.Zero;

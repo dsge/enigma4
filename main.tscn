@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Spatial.cs" type="Script" id=1]
+[ext_resource path="res://Main.cs" type="Script" id=1]
 [ext_resource path="res://camera_control.gd" type="Script" id=2]
 [ext_resource path="res://Material.material" type="Material" id=3]
 
