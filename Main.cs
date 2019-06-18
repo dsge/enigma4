@@ -71,6 +71,12 @@ public class Main : Godot.Spatial
         surfaceTool.AddVertex(new Vector3(0f, 0f, 15f));
         surfaceTool.AddVertex(new Vector3(0f, 0f, 0f));
         surfaceTool.AddVertex(new Vector3(15f, 0f, 0f));
+        surfaceTool.AddIndex(0);
+        surfaceTool.AddIndex(1);
+        surfaceTool.AddIndex(2);
+        surfaceTool.AddIndex(3);
+        surfaceTool.AddIndex(4);
+        surfaceTool.AddIndex(5);
         ArrayMesh arrayMesh = surfaceTool.Commit();
 
         var meshInstance = new MeshInstance();
@@ -96,6 +102,16 @@ public class Main : Godot.Spatial
 
         ret.AddChild(rigidBody);
         //ret.Translation = new Vector3(-7.5f, 0, -7.5f);
+
+
+        Navigation nav = new Navigation();
+
+        NavigationMesh navMesh = new NavigationMesh();
+        navMesh.CreateFromMesh(meshInstance.Mesh);
+
+        nav.NavmeshAdd(navMesh, meshInstance.Transform);
+
+        var path = nav.GetSimplePath(new Vector3(0, 0, 0), new Vector3(3f, 0, 0));
 
         return ret;
     }
