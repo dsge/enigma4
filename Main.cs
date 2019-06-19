@@ -8,12 +8,15 @@ public class Main : Godot.Spatial
     protected Vector3 raycastFrom = Vector3.Zero;
     protected Vector3 raycastTo = Vector3.Zero;
     // Called when the node enters the scene tree for the first time.
+    protected Navigation navigation = new Navigation();
+    protected KinematicBody playerCharacter;
     public override void _Ready()
     {
         GD.Print("This is the same as overriding _Ready()... 2");
 
         AddChild(this.createFloor());
-        AddChild(this.createPlayerCharacter());
+        this.playerCharacter = this.createPlayerCharacter();
+        AddChild(this.playerCharacter);
 
         Godot.Spatial camera = GetNode<Godot.Spatial>("Camera");
         camera.Translation = new Vector3(10f, 10f, 10f);
@@ -53,6 +56,18 @@ public class Main : Godot.Spatial
                         rigidBody.Sleeping = false;
                     }
                 }
+
+                if (obj is StaticBody staticBody) {
+                    Vector3 position = staticBody.ToGlobal((Vector3)result["position"]);
+                    var path = this.navigation.GetSimplePath(this.playerCharacter.Translation, position);
+                    if (path.Length > 0) {
+                        if (this.playerCharacter.IsOnFloor()) {
+                            // this.playerCharacter.MoveLockY = true;
+                        }
+                        this.playerCharacter.MoveAndSlide(this.playerCharacter.ToLocal(path[1]) * 60);
+                    }
+                }
+
                 GD.Print("hit");
             } else {
                 GD.Print("miss");
@@ -103,26 +118,21 @@ public class Main : Godot.Spatial
         ret.AddChild(rigidBody);
         //ret.Translation = new Vector3(-7.5f, 0, -7.5f);
 
-
-        Navigation nav = new Navigation();
-
         NavigationMesh navMesh = new NavigationMesh();
         navMesh.CreateFromMesh(meshInstance.Mesh);
 
-        nav.NavmeshAdd(navMesh, meshInstance.Transform);
-
-        var path = nav.GetSimplePath(new Vector3(0, 0, 0), new Vector3(3f, 0, 0));
+        this.navigation.NavmeshAdd(navMesh, meshInstance.Transform);
 
         return ret;
     }
 
-    protected RigidBody createPlayerCharacter() {
+    protected KinematicBody createPlayerCharacter() {
         var packedScene = GD.Load<PackedScene>("res://gameObjects/Cylinder.tscn");
 
         MeshInstance ret = (MeshInstance)packedScene.Instance();
         ret.Translation = new Vector3(0, 0, 0);
 
-        RigidBody rigidBody = new RigidBody();
+        KinematicBody rigidBody = new KinematicBody();
 
         CylinderShape shape = new CylinderShape();
         shape.Radius = 1f;
@@ -136,8 +146,6 @@ public class Main : Godot.Spatial
         rigidBody.AddChild(ret);
 
         rigidBody.Translation = new Vector3(0, 0.6f + 5f, 0);
-
-        rigidBody.Sleeping = true;
 
         return rigidBody;
     }
