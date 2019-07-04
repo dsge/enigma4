@@ -1,10 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Main.cs" type="Script" id=1]
 [ext_resource path="res://Material.material" type="Material" id=2]
-[ext_resource path="res://scenes/Floor.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/PlayerCharacter.tscn" type="PackedScene" id=4]
-[ext_resource path="res://camera_control.gd" type="Script" id=5]
+[ext_resource path="res://scenes/PlayerCharacter.tscn" type="PackedScene" id=3]
+[ext_resource path="res://camera_control.gd" type="Script" id=4]
+[ext_resource path="res://scenes/Floor.tscn" type="PackedScene" id=5]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "Cube"
@@ -22,6 +22,8 @@ surfaces/0 = {
 "vertex_count": 36
 }
 
+[sub_resource type="PhysicsMaterial" id=3]
+
 [node name="basenode" type="Spatial"]
 script = ExtResource( 1 )
 
@@ -30,12 +32,15 @@ transform = Transform( 0.275612, -0.0333948, 0.946656, 0.483894, 0.175004, 0.013
 mesh = SubResource( 1 )
 material/0 = null
 
-[node name="Floor" parent="." instance=ExtResource( 3 )]
+[node name="Navigation" type="Navigation" parent="."]
 
-[node name="PlayerCharacter" parent="." instance=ExtResource( 4 )]
+[node name="PlayerCharacter" parent="Navigation" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.3283, 0 )
 
-[node name="Camera" type="Camera" parent="PlayerCharacter"]
-transform = Transform( 0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 5, 5, 5 )
+[node name="Camera" type="Camera" parent="Navigation/PlayerCharacter"]
+transform = Transform( 0.707107, -0.612372, 0.353553, 0, 0.5, 0.866025, -0.707107, -0.612372, 0.353553, 3, 7, 3 )
 fov = 90.0
-script = ExtResource( 5 )
+script = ExtResource( 4 )
+
+[node name="Floor" parent="Navigation" instance=ExtResource( 5 )]
+physics_material_override = SubResource( 3 )
