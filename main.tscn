@@ -1,46 +1,34 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Main.cs" type="Script" id=1]
-[ext_resource path="res://Material.material" type="Material" id=2]
-[ext_resource path="res://scenes/PlayerCharacter.tscn" type="PackedScene" id=3]
-[ext_resource path="res://camera_control.gd" type="Script" id=4]
-[ext_resource path="res://scenes/Floor.tscn" type="PackedScene" id=5]
-
-[sub_resource type="ArrayMesh" id=1]
-resource_name = "Cube"
-surfaces/0 = {
-"aabb": AABB( -2.20306, -1.9424, -2.5804, 4.1556, 4.23916, 4.94172 ),
-"array_data": PoolByteArray( 19, 13, 240, 63, 155, 113, 214, 191, 73, 216, 4, 192, 5, 130, 253, 0, 25, 86, 165, 191, 153, 160, 248, 191, 146, 207, 255, 63, 5, 130, 253, 0, 244, 254, 12, 192, 244, 169, 235, 191, 53, 37, 37, 192, 5, 130, 253, 0, 198, 53, 236, 191, 160, 192, 225, 63, 251, 229, 3, 192, 11, 123, 230, 0, 198, 106, 161, 63, 38, 254, 18, 64, 208, 237, 227, 63, 11, 123, 230, 0, 184, 149, 160, 63, 207, 131, 179, 63, 36, 208, 24, 192, 11, 123, 230, 0, 19, 13, 240, 63, 155, 113, 214, 191, 73, 216, 4, 192, 125, 21, 254, 0, 198, 106, 161, 63, 38, 254, 18, 64, 208, 237, 227, 63, 125, 21, 254, 0, 196, 236, 249, 63, 108, 37, 208, 191, 222, 31, 23, 64, 125, 21, 254, 0, 198, 106, 161, 63, 38, 254, 18, 64, 208, 237, 227, 63, 241, 15, 125, 0, 25, 86, 165, 191, 153, 160, 248, 191, 146, 207, 255, 63, 241, 15, 125, 0, 196, 236, 249, 63, 108, 37, 208, 191, 222, 31, 23, 64, 241, 15, 125, 0, 206, 252, 8, 192, 240, 252, 148, 63, 51, 24, 181, 63, 135, 228, 23, 0, 244, 254, 12, 192, 244, 169, 235, 191, 53, 37, 37, 192, 135, 228, 23, 0, 25, 86, 165, 191, 153, 160, 248, 191, 146, 207, 255, 63, 135, 228, 23, 0, 184, 149, 160, 63, 207, 131, 179, 63, 36, 208, 24, 192, 246, 19, 131, 0, 244, 254, 12, 192, 244, 169, 235, 191, 53, 37, 37, 192, 246, 19, 131, 0, 198, 53, 236, 191, 160, 192, 225, 63, 251, 229, 3, 192, 246, 19, 131, 0, 19, 13, 240, 63, 155, 113, 214, 191, 73, 216, 4, 192, 12, 130, 1, 0, 196, 236, 249, 63, 108, 37, 208, 191, 222, 31, 23, 64, 12, 130, 1, 0, 25, 86, 165, 191, 153, 160, 248, 191, 146, 207, 255, 63, 12, 130, 1, 0, 198, 53, 236, 191, 160, 192, 225, 63, 251, 229, 3, 192, 215, 118, 16, 0, 206, 252, 8, 192, 240, 252, 148, 63, 51, 24, 181, 63, 215, 118, 16, 0, 198, 106, 161, 63, 38, 254, 18, 64, 208, 237, 227, 63, 215, 118, 16, 0, 19, 13, 240, 63, 155, 113, 214, 191, 73, 216, 4, 192, 124, 24, 251, 0, 184, 149, 160, 63, 207, 131, 179, 63, 36, 208, 24, 192, 124, 24, 251, 0, 198, 106, 161, 63, 38, 254, 18, 64, 208, 237, 227, 63, 124, 24, 251, 0, 198, 106, 161, 63, 38, 254, 18, 64, 208, 237, 227, 63, 237, 18, 124, 0, 206, 252, 8, 192, 240, 252, 148, 63, 51, 24, 181, 63, 237, 18, 124, 0, 25, 86, 165, 191, 153, 160, 248, 191, 146, 207, 255, 63, 237, 18, 124, 0, 206, 252, 8, 192, 240, 252, 148, 63, 51, 24, 181, 63, 131, 13, 248, 0, 198, 53, 236, 191, 160, 192, 225, 63, 251, 229, 3, 192, 131, 13, 248, 0, 244, 254, 12, 192, 244, 169, 235, 191, 53, 37, 37, 192, 131, 13, 248, 0, 184, 149, 160, 63, 207, 131, 179, 63, 36, 208, 24, 192, 15, 247, 131, 0, 19, 13, 240, 63, 155, 113, 214, 191, 73, 216, 4, 192, 15, 247, 131, 0, 244, 254, 12, 192, 244, 169, 235, 191, 53, 37, 37, 192, 15, 247, 131, 0 ),
-"array_index_data": PoolByteArray( 0, 0, 2, 0, 1, 0, 3, 0, 5, 0, 4, 0, 6, 0, 8, 0, 7, 0, 9, 0, 11, 0, 10, 0, 12, 0, 14, 0, 13, 0, 15, 0, 17, 0, 16, 0, 18, 0, 20, 0, 19, 0, 21, 0, 23, 0, 22, 0, 24, 0, 26, 0, 25, 0, 27, 0, 29, 0, 28, 0, 30, 0, 32, 0, 31, 0, 33, 0, 35, 0, 34, 0 ),
-"blend_shape_data": [  ],
-"format": 97539,
-"index_count": 36,
-"material": ExtResource( 2 ),
-"name": "Material",
-"primitive": 4,
-"skeleton_aabb": [  ],
-"vertex_count": 36
-}
-
-[sub_resource type="PhysicsMaterial" id=3]
+[ext_resource path="res://scenes/PlayerCharacter.tscn" type="PackedScene" id=2]
+[ext_resource path="res://camera_control.gd" type="Script" id=3]
+[ext_resource path="res://scenes/Floor.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/Wall.tscn" type="PackedScene" id=5]
 
 [node name="basenode" type="Spatial"]
 script = ExtResource( 1 )
 
-[node name="Cube" type="MeshInstance" parent="."]
-transform = Transform( 0.275612, -0.0333948, 0.946656, 0.483894, 0.175004, 0.0134567, -0.830593, 0.0908745, 0.321965, 0.162195, 2.40839, -3.50092 )
-mesh = SubResource( 1 )
-material/0 = null
-
 [node name="Navigation" type="Navigation" parent="."]
 
-[node name="PlayerCharacter" parent="Navigation" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 14.3283, 0 )
+[node name="PlayerCharacter" parent="Navigation" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.0821, -1.20454 )
 
 [node name="Camera" type="Camera" parent="Navigation/PlayerCharacter"]
 transform = Transform( 0.707107, -0.612372, 0.353553, 0, 0.5, 0.866025, -0.707107, -0.612372, 0.353553, 3, 7, 3 )
 fov = 90.0
-script = ExtResource( 4 )
+script = ExtResource( 3 )
 
-[node name="Floor" parent="Navigation" instance=ExtResource( 5 )]
-physics_material_override = SubResource( 3 )
+[node name="Floor2" parent="Navigation" instance=ExtResource( 4 )]
+transform = Transform( 0.0635941, 0.278065, -0.958455, 0, 0.960399, 0.278629, 0.997976, -0.0177192, 0.0610757, -8.21292, 0, 8.22041 )
+
+[node name="Wall" parent="Navigation" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.203957, -5.0501 )
+
+[node name="Wall2" parent="Navigation" instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.19121, 0, -0.228808 )
+
+[node name="Floor" parent="Navigation" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, -3.72529e-09, -2.98023e-08, 1, 1.86265e-09, -3.72529e-09, 0, 1, 9.53674e-07, -4.76837e-07, -3.98771 )
+
+[node name="ImmediateGeometry" type="ImmediateGeometry" parent="."]

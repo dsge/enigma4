@@ -25,4 +25,5 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="MeshInstance"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 navmesh = SubResource( 4 )

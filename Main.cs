@@ -11,6 +11,7 @@ public class Main : Godot.Spatial
     protected Navigation navigation = null;
     protected KinematicBody playerCharacter = null;
     protected Camera mainCamera = null;
+    protected ImmediateGeometry immediateGeometry = null;
     protected Vector3[] playerMovementPath;
     public override void _Ready()
     {
@@ -19,13 +20,19 @@ public class Main : Godot.Spatial
         this.mainCamera = (Camera)GetNode("Navigation/PlayerCharacter/Camera");
         this.playerCharacter = (KinematicBody)GetNode("Navigation/PlayerCharacter");
         this.navigation = (Navigation)GetNode("Navigation");
+        this.immediateGeometry = (ImmediateGeometry)GetNode("ImmediateGeometry");
     }
 
     public override void _Process(float delta)
     {
-        Godot.Spatial cube = GetNode<Godot.Spatial>("Cube");
-
-        cube.Rotation = new Vector3(cube.Rotation.x + delta * 2, cube.Rotation.y, cube.Rotation.z);
+        if (this.immediateGeometry != null && this.playerMovementPath != null) {
+            this.immediateGeometry.Clear();
+            this.immediateGeometry.Begin(Mesh.PrimitiveType.LineStrip);
+            for (int i = 0; i < this.playerMovementPath.Length; i++) {
+                this.immediateGeometry.AddVertex(new Vector3(this.playerMovementPath[i].x, this.playerMovementPath[i].y + 1f, this.playerMovementPath[i].z));
+            }
+            this.immediateGeometry.End();
+        }
     }
 
     public override void _Input(InputEvent @event){
@@ -55,17 +62,18 @@ public class Main : Godot.Spatial
                 }
 
                 if (obj is StaticBody staticBody && this.playerCharacter != null && this.navigation != null) {
-                    Vector3 position = staticBody.ToGlobal((Vector3)result["position"]);
+                    Vector3 position = (Vector3)result["position"];
                     var path = this.navigation.GetSimplePath(this.playerCharacter.Translation, position);
                     if (path.Length > 0) {
                         if (this.playerCharacter.IsOnFloor()) {
                             // this.playerCharacter.MoveLockY = true;
                         }
                         this.playerMovementPath = path;
+                        GD.Print("path found");
+                    } else {
+                        GD.Print("path not found");
                     }
                 }
-
-                GD.Print("hit");
             } else {
                 GD.Print("miss");
             }
@@ -76,7 +84,10 @@ public class Main : Godot.Spatial
         if (this.playerMovementPath != null && this.playerCharacter != null) {
             Vector3 targetPoint = this.playerMovementPath[1];
             var speed = 10f;
-            this.playerCharacter.MoveAndCollide(this.playerCharacter.ToLocal(targetPoint).Normalized() * speed * delta);
+            var collision = this.playerCharacter.MoveAndSlide(this.playerCharacter.ToLocal(targetPoint).Normalized() * speed);
+            if (collision != null) {
+                GD.Print("collision");
+            }
             var distance = this.playerCharacter.Translation.DistanceTo(targetPoint);
             if (distance < 1f) {
                 this.playerMovementPath = null;
