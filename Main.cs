@@ -10,17 +10,18 @@ public class Main : Godot.Spatial
     // Called when the node enters the scene tree for the first time.
     protected Navigation navigation = new Navigation();
     protected KinematicBody playerCharacter;
+    protected string mainCamera = "PlayerCharacter/Camera";
     public override void _Ready()
     {
         GD.Print("This is the same as overriding _Ready()... 2");
 
-        AddChild(this.createFloor());
+        /* AddChild(this.createFloor());
         this.playerCharacter = this.createPlayerCharacter();
-        AddChild(this.playerCharacter);
+        AddChild(this.playerCharacter);*/
 
-        Godot.Spatial camera = GetNode<Godot.Spatial>("Camera");
+        /*Godot.Spatial camera = GetNode<Godot.Spatial>("Camera");
         camera.Translation = new Vector3(10f, 10f, 10f);
-        camera.LookAt(new Vector3(0, 0, 0), new Vector3(0, 1f, 0));
+        camera.LookAt(new Vector3(0, 0, 0), new Vector3(0, 1f, 0));*/
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -35,7 +36,7 @@ public class Main : Godot.Spatial
         if (@event is InputEventMouseButton eventMouseButton) {
             if (eventMouseButton.ButtonIndex == 1 && eventMouseButton.Pressed) {
                 var rayLength = 1000;
-                var camera = (Camera)GetNode("Camera");
+                var camera = (Camera)GetNode(mainCamera);
                 this.raycastFrom = camera.ProjectRayOrigin(eventMouseButton.Position);
                 this.raycastTo = raycastFrom + camera.ProjectRayNormal(eventMouseButton.Position) * rayLength;
             }
@@ -57,7 +58,7 @@ public class Main : Godot.Spatial
                     }
                 }
 
-                if (obj is StaticBody staticBody) {
+                if (obj is StaticBody staticBody && this.playerCharacter != null) {
                     Vector3 position = staticBody.ToGlobal((Vector3)result["position"]);
                     var path = this.navigation.GetSimplePath(this.playerCharacter.Translation, position);
                     if (path.Length > 0) {
