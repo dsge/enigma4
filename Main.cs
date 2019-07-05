@@ -19,19 +19,68 @@ public class Main : Godot.Spatial
 
         this.mainCamera = (Camera)GetNode("Navigation/PlayerCharacter/Camera");
         this.playerCharacter = (KinematicBody)GetNode("Navigation/PlayerCharacter");
-        this.navigation = (Navigation)GetNode("Navigation");
+        //this.navigation = (Navigation)GetNode("Navigation");
+        this.navigation = new Navigation();
         this.immediateGeometry = (ImmediateGeometry)GetNode("ImmediateGeometry");
+
+        var map = (Spatial)GetNode("Navigation/map");
+        if (map != null && this.navigation != null) {
+            this.generateNavigationMeshInstances(this.navigation, map.GetChildren());
+            if (this.playerCharacter != null) {
+                var closestPoint = this.navigation.GetClosestPoint(this.playerCharacter.Translation);
+                closestPoint.y = (float)Math.Round(closestPoint.y);
+                this.playerCharacter.Translation = closestPoint;
+            }
+        }
+
+
+    }
+
+    protected void generateNavigationMeshInstances(Navigation nav, Godot.Collections.Array nodes) {
+        for (int i = 0; i < nodes.Count; i++) {
+            if (nodes[i] is StaticBody staticBody) {
+                var meshInstance = staticBody.GetNodeOrNull<MeshInstance>("MeshInstance");
+                if (meshInstance != null) {
+                    NavigationMesh navMesh = new NavigationMesh();
+                    navMesh.CreateFromMesh(meshInstance.Mesh);
+                    nav.NavmeshAdd(navMesh, meshInstance.GetGlobalTransform());
+                    var transform = meshInstance.Transform;
+                    var translation = meshInstance.Translation;
+                    var globalTransform = meshInstance.GlobalTransform;
+                    GD.Print("created navmesh for meshinstance");
+                } else {
+                    GD.Print("[navmesh] meshinstance skipped (no child named 'MeshInstance')");
+                }
+            } else {
+                GD.Print("[navmesh] meshinstance skipped (no staticbody)");
+            }
+
+        }
     }
 
     public override void _Process(float delta)
     {
-        if (this.immediateGeometry != null && this.playerMovementPath != null) {
+
+        /*if (this.playerCharacter.IsOnFloor()){
+            GD.Print("is on floor");
+        } else {
+            GD.Print("is NOT on floor " + this.playerCharacter.Translation.y);
+        }*/
+        if (this.immediateGeometry != null) {
             this.immediateGeometry.Clear();
-            this.immediateGeometry.Begin(Mesh.PrimitiveType.LineStrip);
-            for (int i = 0; i < this.playerMovementPath.Length; i++) {
-                this.immediateGeometry.AddVertex(new Vector3(this.playerMovementPath[i].x, this.playerMovementPath[i].y + 1f, this.playerMovementPath[i].z));
+            if (this.playerMovementPath != null) {
+                this.immediateGeometry.Begin(Mesh.PrimitiveType.LineStrip);
+                for (int i = 0; i < this.playerMovementPath.Length; i++) {
+                    this.immediateGeometry.AddVertex(
+                        new Vector3(
+                            this.playerMovementPath[i].x,
+                            this.playerMovementPath[i].y + 1f,
+                            this.playerMovementPath[i].z
+                        )
+                    );
+                }
+                this.immediateGeometry.End();
             }
-            this.immediateGeometry.End();
         }
     }
 
@@ -62,17 +111,25 @@ public class Main : Godot.Spatial
                 }
 
                 if (obj is StaticBody staticBody && this.playerCharacter != null && this.navigation != null) {
-                    Vector3 position = (Vector3)result["position"];
-                    var path = this.navigation.GetSimplePath(this.playerCharacter.Translation, position);
+                    Vector3 to = (Vector3)result["position"];
+                    Vector3 from = this.playerCharacter.Translation;
+
+                    var path = this.navigation.GetSimplePath(
+                        from,
+                        to
+                    );
                     if (path.Length > 0) {
-                        if (this.playerCharacter.IsOnFloor()) {
-                            // this.playerCharacter.MoveLockY = true;
-                        }
                         this.playerMovementPath = path;
                         GD.Print("path found");
                     } else {
+                        this.playerMovementPath = null;
                         GD.Print("path not found");
                     }
+                }
+
+                if (!(obj is StaticBody) && !(obj is RigidBody)) {
+                    this.playerMovementPath = null;
+                    GD.Print("unknown object type, ignoring");
                 }
             } else {
                 GD.Print("miss");
@@ -82,16 +139,18 @@ public class Main : Godot.Spatial
         }
 
         if (this.playerMovementPath != null && this.playerCharacter != null) {
-            Vector3 targetPoint = this.playerMovementPath[1];
+            Vector3 targetPoint = new Vector3(this.playerMovementPath[1]);
             var speed = 10f;
-            var collision = this.playerCharacter.MoveAndSlide(this.playerCharacter.ToLocal(targetPoint).Normalized() * speed);
-            if (collision != null) {
+            var targetDirection = this.playerCharacter.ToLocal(targetPoint).Normalized();
+            var collision = this.playerCharacter.MoveAndSlideWithSnap(targetDirection * speed, new Vector3(0, 100f, 0), this.navigation.GetClosestPointNormal(this.playerCharacter.Translation));
+            /*if (collision != null) {
                 GD.Print("collision");
-            }
+            }*/
             var distance = this.playerCharacter.Translation.DistanceTo(targetPoint);
-            if (distance < 1f) {
+            if (distance < 0.1f) {
                 this.playerMovementPath = null;
             }
         }
     }
 }
+
