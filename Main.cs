@@ -29,7 +29,8 @@ public class Main : Godot.Spatial
             if (this.playerCharacter != null) {
                 var closestPoint = this.navigation.GetClosestPoint(this.playerCharacter.Translation);
                 closestPoint.y = (float)Math.Round(closestPoint.y);
-                this.playerCharacter.Translation = closestPoint;
+                closestPoint.y = 0;
+                // this.playerCharacter.Translation = closestPoint;
             }
         }
 
@@ -60,12 +61,6 @@ public class Main : Godot.Spatial
 
     public override void _Process(float delta)
     {
-
-        /*if (this.playerCharacter.IsOnFloor()){
-            GD.Print("is on floor");
-        } else {
-            GD.Print("is NOT on floor " + this.playerCharacter.Translation.y);
-        }*/
         if (this.immediateGeometry != null) {
             this.immediateGeometry.Clear();
             if (this.playerMovementPath != null) {
@@ -142,14 +137,20 @@ public class Main : Godot.Spatial
             Vector3 targetPoint = new Vector3(this.playerMovementPath[1]);
             var speed = 10f;
             var targetDirection = this.playerCharacter.ToLocal(targetPoint).Normalized();
-            var collision = this.playerCharacter.MoveAndSlideWithSnap(targetDirection * speed, new Vector3(0, 100f, 0), this.navigation.GetClosestPointNormal(this.playerCharacter.Translation));
-            /*if (collision != null) {
-                GD.Print("collision");
-            }*/
+            var collision = this.playerCharacter.MoveAndSlide(targetDirection * speed);
+            var isOnFloor = this.playerCharacter.IsOnFloor();
+            var translation = this.playerCharacter.Translation;
+
             var distance = this.playerCharacter.Translation.DistanceTo(targetPoint);
             if (distance < 0.1f) {
                 this.playerMovementPath = null;
             }
+        }
+
+        if (this.playerCharacter.IsOnFloor()){
+            GD.Print("is on floor");
+        } else {
+            GD.Print("is NOT on floor " + this.playerCharacter.Translation.y);
         }
     }
 }
