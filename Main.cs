@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using Godot.Collections;
+using System.Collections.Generic;
 
 public class Main : Godot.Spatial
 {
@@ -12,7 +13,7 @@ public class Main : Godot.Spatial
     protected KinematicBody playerCharacter = null;
     protected Camera mainCamera = null;
     protected ImmediateGeometry immediateGeometry = null;
-    protected Vector3[] playerMovementPath;
+    protected List<Vector3> playerMovementPath;
     public override void _Ready()
     {
         GD.Print("This is the same as overriding _Ready()... 2");
@@ -65,7 +66,7 @@ public class Main : Godot.Spatial
             this.immediateGeometry.Clear();
             if (this.playerMovementPath != null) {
                 this.immediateGeometry.Begin(Mesh.PrimitiveType.LineStrip);
-                for (int i = 0; i < this.playerMovementPath.Length; i++) {
+                for (int i = 0; i < this.playerMovementPath.Count; i++) {
                     this.immediateGeometry.AddVertex(
                         new Vector3(
                             this.playerMovementPath[i].x,
@@ -107,14 +108,14 @@ public class Main : Godot.Spatial
 
                 if (obj is StaticBody staticBody && this.playerCharacter != null && this.navigation != null) {
                     Vector3 to = (Vector3)result["position"];
-                    Vector3 from = this.playerCharacter.Translation;
+                    Vector3 from = this.navigation.GetClosestPoint(this.playerCharacter.Translation);
 
                     var path = this.navigation.GetSimplePath(
                         from,
                         to
                     );
-                    if (path.Length > 0) {
-                        this.playerMovementPath = path;
+                    if (path.Length > 1) {
+                        this.playerMovementPath = new List<Vector3>(path);
                         GD.Print("path found");
                     } else {
                         this.playerMovementPath = null;
@@ -141,16 +142,19 @@ public class Main : Godot.Spatial
             var isOnFloor = this.playerCharacter.IsOnFloor();
             var translation = this.playerCharacter.Translation;
 
-            var distance = this.playerCharacter.Translation.DistanceTo(targetPoint);
-            if (distance < 0.1f) {
-                this.playerMovementPath = null;
+            var distance = this.navigation.GetClosestPoint(this.playerCharacter.Translation).DistanceTo(targetPoint);
+            if (distance < (speed * delta)) {
+                this.playerMovementPath.RemoveAt(0);
+                if (this.playerMovementPath.Count < 2) {
+                    this.playerMovementPath = null;
+                }
             }
-        }
 
-        if (this.playerCharacter.IsOnFloor()){
-            GD.Print("is on floor");
-        } else {
-            GD.Print("is NOT on floor " + this.playerCharacter.Translation.y);
+            if (this.playerCharacter.IsOnFloor()){
+                GD.Print("is on floor");
+            } else {
+                // GD.Print("is NOT on floor " + this.playerCharacter.Translation.y);
+            }
         }
     }
 }
