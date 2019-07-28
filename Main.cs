@@ -2,6 +2,7 @@ using Godot;
 using System;
 using Godot.Collections;
 using System.Collections.Generic;
+using App;
 
 public class Main : Godot.Spatial
 {
@@ -9,7 +10,7 @@ public class Main : Godot.Spatial
     protected Vector3 raycastFrom = Vector3.Zero;
     protected Vector3 raycastTo = Vector3.Zero;
     // Called when the node enters the scene tree for the first time.
-    protected Navigation navigation = null;
+    protected App.Navigation navigation = null;
     protected KinematicBody playerCharacter = null;
     protected Camera mainCamera = null;
     protected ImmediateGeometry immediateGeometry = null;
@@ -20,8 +21,7 @@ public class Main : Godot.Spatial
 
         this.mainCamera = (Camera)GetNode("Navigation/PlayerCharacter/Camera");
         this.playerCharacter = (KinematicBody)GetNode("Navigation/PlayerCharacter");
-        this.navigation = (Navigation)GetNode("Navigation");
-        //this.navigation = new Navigation();
+        this.navigation = new App.Navigation();
         this.immediateGeometry = (ImmediateGeometry)GetNode("ImmediateGeometry");
 
         var map = (Spatial)GetNode("Navigation/map");
@@ -38,7 +38,7 @@ public class Main : Godot.Spatial
 
     }
 
-    protected void generateNavigationMeshInstances(Navigation nav, Godot.Collections.Array nodes) {
+    protected void generateNavigationMeshInstances(App.Navigation nav, Godot.Collections.Array nodes) {
         for (int i = 0; i < nodes.Count; i++) {
             if (nodes[i] is StaticBody staticBody) {
                 var meshInstance = staticBody.GetNodeOrNull<MeshInstance>("MeshInstance");
