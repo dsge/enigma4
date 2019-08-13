@@ -11,3 +11,4 @@ export.cfg
 
 .vscode/
 build/
+/vendor/

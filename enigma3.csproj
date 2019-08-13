@@ -51,8 +51,11 @@
   <ItemGroup>
     <Compile Include="KinematicGravity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\Inventory.cs" />
     <Compile Include="src\Navigation.cs" />
+    <Compile Include="src\PlayerCamera.cs" />
     <Compile Include="Main.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

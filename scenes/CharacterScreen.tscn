@@ -1,0 +1,28 @@
+[gd_scene format=2]
+
+[node name="CharacterScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -508.0
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 513.0
+margin_bottom = 601.0
+color = Color( 0.384314, 0.4, 0.537255, 1 )
+
+[node name="Label" type="Label" parent="ColorRect"]
+margin_left = 1.0
+margin_top = 18.0
+margin_right = 513.0
+margin_bottom = 49.0
+text = "CharacterScreen
+
+"
+align = 1
+valign = 1
+
+[node name="GridContainer" type="GridContainer" parent="ColorRect"]
+margin_left = 1.0
+margin_top = 68.0
+margin_right = 512.0
+margin_bottom = 502.0

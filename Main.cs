@@ -3,6 +3,7 @@ using System;
 using Godot.Collections;
 using System.Collections.Generic;
 using App;
+// using SharpNav.Geometry;
 
 public class Main : Godot.Spatial
 {
@@ -12,17 +13,27 @@ public class Main : Godot.Spatial
     // Called when the node enters the scene tree for the first time.
     protected App.Navigation navigation = null;
     protected KinematicBody playerCharacter = null;
-    protected Camera mainCamera = null;
+    protected PlayerCamera mainCamera = null;
     protected ImmediateGeometry immediateGeometry = null;
     protected List<Vector3> playerMovementPath;
+    protected Control inventory = null;
+    protected Control characterScreen = null;
     public override void _Ready()
     {
         GD.Print("This is the same as overriding _Ready()... 2");
 
-        this.mainCamera = (Camera)GetNode("Navigation/PlayerCharacter/Camera");
+        /*var foo = new Triangle3(
+            new SharpNav.Vector3(0, 0, 0),
+            new SharpNav.Vector3(0, 1f, 0),
+            new SharpNav.Vector3(0, 1f, 1f)
+        );*/
+
+        this.mainCamera = (PlayerCamera)GetNode("Navigation/PlayerCharacter/Camera");
         this.playerCharacter = (KinematicBody)GetNode("Navigation/PlayerCharacter");
         this.navigation = new App.Navigation();
         this.immediateGeometry = (ImmediateGeometry)GetNode("ImmediateGeometry");
+        this.inventory = (Control)GetNode("Inventory");
+        this.characterScreen = (Control)GetNode("CharacterScreen");
 
         var map = (Spatial)GetNode("Navigation/map");
         if (map != null && this.navigation != null) {
@@ -87,6 +98,40 @@ public class Main : Godot.Spatial
                 var camera = this.mainCamera;
                 this.raycastFrom = camera.ProjectRayOrigin(eventMouseButton.Position);
                 this.raycastTo = raycastFrom + camera.ProjectRayNormal(eventMouseButton.Position) * rayLength;
+            }
+        }
+
+        if (@event is InputEventKey eventKey) {
+            if (eventKey.Pressed && eventKey.Scancode == (int)KeyList.I) {
+                if (this.inventory != null) {
+                    this.inventory.Visible = !this.inventory.Visible;
+
+                    if (this.inventory.Visible) {
+                        var temporaryTranslation = new Vector3(
+                            this.GetViewport().Size.x / 250,
+                            0,
+                            - this.GetViewport().Size.x / 250
+                        );
+                        this.mainCamera.setTemporaryTranslation(temporaryTranslation);
+                    } else {
+                        this.mainCamera.clearTemporaryTranslation();
+                    }
+                }
+            }
+            if (eventKey.Pressed && eventKey.Scancode == (int)KeyList.C) {
+                if (this.characterScreen != null) {
+                    this.characterScreen.Visible = !this.characterScreen.Visible;
+                    if (this.characterScreen.Visible) {
+                        var temporaryTranslation = new Vector3(
+                            - this.GetViewport().Size.x / 250,
+                            0,
+                            this.GetViewport().Size.x / 250
+                        );
+                        this.mainCamera.setTemporaryTranslation(temporaryTranslation);
+                    } else {
+                        this.mainCamera.clearTemporaryTranslation();
+                    }
+                }
             }
         }
     }
