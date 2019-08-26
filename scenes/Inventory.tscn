@@ -32,9 +32,9 @@ valign = 1
 [node name="GridContainer" type="GridContainer" parent="Panel"]
 anchor_right = 1.0
 margin_left = 30.0
-margin_top = 100.0
+margin_top = 101.053
 margin_right = -30.0
-margin_bottom = 49.0
+margin_bottom = 150.053
 
 [node name="Label" type="Label" parent="Panel/GridContainer"]
 margin_right = 20.0

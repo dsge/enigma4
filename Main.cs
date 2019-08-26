@@ -91,7 +91,7 @@ public class Main : Godot.Spatial
         }
     }
 
-    public override void _Input(InputEvent @event){
+    public override void _UnhandledInput(InputEvent @event){
         if (@event is InputEventMouseButton eventMouseButton) {
             if (eventMouseButton.ButtonIndex == 1 && eventMouseButton.Pressed) {
                 var rayLength = 1000;
