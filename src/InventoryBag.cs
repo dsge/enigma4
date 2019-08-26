@@ -9,15 +9,22 @@ namespace App
         protected List<InventoryBagItem> items = new List<InventoryBagItem>();
         public override void _Ready()
         {
-            this.SetMouseFilter(Control.MouseFilterEnum.Ignore);
+            this.SetMouseFilter(Control.MouseFilterEnum.Pass);
             this.initItemGrid(new Vector2(4, 6));
 
             this.addItem(new InventoryBagItem());
             this.addItem(new InventoryBagItem());
         }
 
-        public void onMouseEnter() {
-            GD.Print("mouse_enter");
+        public override void _Input(InputEvent @event){
+            if (@event is InputEventMouseMotion eventMouseMotion) {
+                if (InventoryInteraction.hasPickedUpItem()) {
+                    this.AcceptEvent();
+                    InventoryBagItem item = InventoryInteraction.getPickedUpItem();
+                    item.SetGlobalPosition(eventMouseMotion.GetGlobalPosition());
+
+                }
+            }
         }
 
         protected void initItemGrid(Vector2 size) {
@@ -30,7 +37,7 @@ namespace App
                     tmp.MarginLeft = this.itemGridCellSize * i;
                     tmp.MarginTop = this.itemGridCellSize * j;
 
-                    var sprite = new Sprite();
+                    var sprite = new TextureRect();
                     sprite.Texture = texture;
                     tmp.AddChild(sprite);
                     this.AddChild(tmp);
@@ -84,12 +91,22 @@ namespace App
 
     public class InventoryBagItem : Control {
         protected Vector2 cellPosition;
+        /**
+         * in pixels
+         *
+         * @todo do not hardcode this in InventoryBagItem
+         */
+        protected int itemGridCellSize = 64;
         public override void _Ready()
         {
             this.SetMouseFilter(Control.MouseFilterEnum.Pass);
-            this.SetCustomMinimumSize(new Vector2(64, 64));
-            var sprite = new Sprite();
+            this.AnchorLeft = 1;
+            this.AnchorTop = 1;
+            this.SetCustomMinimumSize(new Vector2(this.itemGridCellSize, this.itemGridCellSize));
+            var sprite = new TextureRect();
             sprite.Texture = Util.imageToTexture("res://static/dummy-sword-inventory.png");
+            sprite.SetAnchorsPreset(LayoutPreset.Wide);
+
             /* var inventoryNode = new Control();
             inventoryNode.SetMouseFilter(Control.MouseFilterEnum.Ignore);
             inventoryNode.AddChild(sprite);*/
@@ -98,7 +115,6 @@ namespace App
 
         public override void _GuiInput(InputEvent @event){
             if (@event is InputEventMouseButton eventMouseButton) {
-                this.AcceptEvent();
                 if (eventMouseButton.ButtonIndex == 1) {
                     if (eventMouseButton.Pressed) {
                         if (InventoryInteraction.hasPickedUpItem()) {
@@ -107,18 +123,22 @@ namespace App
                                 * place the item down
                                 */
                                 GD.Print("place the item down");
+                                InventoryInteraction.setPickedUpItem(null);
                             } else {
                                 /**
                                 * the player picked this item up but did not release it just yet
                                 * drag the item on the screen but do not drop it yet
+                                *
+                                * godot does not actually calls this, because it only calls _GuiInput when
+                                * there was a change and not when the user keeps a mouse pressed
                                 */
-                                GD.Print("dragging item...");
                             }
                         } else {
                             /**
                              * if we are pointing at an inventory item with the mouse, then pick up that item
                              */
                             GD.Print("picking up item...");
+                            InventoryInteraction.setPickedUpItem(this);
                         }
                     } else {
                         /**
