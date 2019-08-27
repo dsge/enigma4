@@ -22,7 +22,23 @@ namespace App
                     this.AcceptEvent();
                     InventoryBagItem item = InventoryInteraction.getPickedUpItem();
                     item.SetGlobalPosition(eventMouseMotion.GetGlobalPosition());
-
+                }
+            }
+            if (@event is InputEventMouseButton eventMouseButton) {
+                if (eventMouseButton.ButtonIndex == 1) {
+                    if (eventMouseButton.Pressed) {
+                        if (InventoryInteraction.hasPickedUpItem()) {
+                            if (!InventoryInteraction.justPickedUpItem) {
+                                /**
+                                * place the item down
+                                */
+                                this.AcceptEvent();
+                                GD.Print("place the item down");
+                                this.addItem(InventoryInteraction.getPickedUpItem(), this.localToCellPosition(this.GetLocalMousePosition()));
+                                InventoryInteraction.setPickedUpItem(null);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -51,11 +67,16 @@ namespace App
             var position = this.cellPositionToLocal(item.getCellPosition());
             item.MarginLeft = position.x;
             item.MarginTop = position.y;
-            this.AddChild(item);
-            this.items.Add(item);
+            if (!this.hasItem(item)) {
+                this.AddChild(item);
+                this.items.Add(item);
+            }
         }
 
         protected Vector2 calculateNextOpenCellPosition(Vector2? forceCellPosition = null) {
+            if (forceCellPosition != null) {
+                return (Vector2)forceCellPosition;
+            }
             return new Vector2(this.items.Count, 0);
         }
 
@@ -123,7 +144,7 @@ namespace App
                                 * place the item down
                                 */
                                 GD.Print("place the item down");
-                                InventoryInteraction.setPickedUpItem(null);
+                                // InventoryInteraction.setPickedUpItem(null);
                             } else {
                                 /**
                                 * the player picked this item up but did not release it just yet
