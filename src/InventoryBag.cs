@@ -21,7 +21,7 @@ namespace App
                 if (InventoryInteraction.hasPickedUpItem()) {
                     this.AcceptEvent();
                     InventoryBagItem item = InventoryInteraction.getPickedUpItem();
-                    item.SetGlobalPosition(eventMouseMotion.GetGlobalPosition());
+                    item.SetGlobalPosition(eventMouseMotion.GetGlobalPosition() - InventoryInteraction.getPickedUpAtRelativePosition());
                 }
             }
             if (@event is InputEventMouseButton eventMouseButton) {
@@ -162,7 +162,7 @@ namespace App
                              * if we are pointing at an inventory item with the mouse, then pick up that item
                              */
                             GD.Print("picking up item...");
-                            InventoryInteraction.setPickedUpItem(this);
+                            InventoryInteraction.setPickedUpItem(this, false, eventMouseButton.Position);
                         }
                     } else {
                         /**

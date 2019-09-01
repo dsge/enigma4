@@ -7,6 +7,7 @@ namespace App
 
 
         protected static InventoryBagItem pickedUpItem;
+        protected static Vector2 pickedUpAtRelativePosition;
         /**
          * this prevents the player from picking up and placing down
          * the item in the next frame - he will need to release the mouse
@@ -14,7 +15,10 @@ namespace App
          */
         public static bool justPickedUpItem = false;
 
-        public static void setPickedUpItem(InventoryBagItem item = null, bool ignoreJustPickedUpItem = false) {
+        public static void setPickedUpItem(InventoryBagItem item = null, bool ignoreJustPickedUpItem = false, Vector2? _pickedUpAtRelativePosition = null) {
+            if (_pickedUpAtRelativePosition == null) {
+                _pickedUpAtRelativePosition = Vector2.Zero;
+            }
             if (pickedUpItem != null){
                 /**
                  * if we already had an item picked up but we are either
@@ -30,9 +34,19 @@ namespace App
                 item.onPickup();
             }
             pickedUpItem = item;
+            pickedUpAtRelativePosition = (Vector2)_pickedUpAtRelativePosition;
             if (pickedUpItem != null && !ignoreJustPickedUpItem) {
                 justPickedUpItem = true;
             }
+        }
+
+        public static Vector2 getPickedUpAtRelativePosition() {
+            if (pickedUpAtRelativePosition == null) {
+                return Vector2.Zero;
+            } else {
+                return (Vector2)pickedUpAtRelativePosition;
+            }
+
         }
 
         public static InventoryBagItem getPickedUpItem() {
