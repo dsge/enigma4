@@ -1,6 +1,6 @@
 using Godot;
 
-namespace App
+namespace App.Inventory
 {
     public class Inventory: PanelContainer {
 

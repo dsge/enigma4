@@ -1,7 +1,7 @@
 
 using Godot;
 
-namespace App
+namespace App.Inventory
 {
     public interface InventoryBagItemInterface {
         Vector2 getCellPosition();

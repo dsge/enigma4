@@ -1,7 +1,7 @@
 using Godot;
 using App;
 
-namespace App
+namespace App.Inventory
 {
     public class InventoryInteraction {
 

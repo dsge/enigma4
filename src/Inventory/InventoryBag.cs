@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-namespace App
+namespace App.Inventory
 {
     public class InventoryBag: Control {
 
