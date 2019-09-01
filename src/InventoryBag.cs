@@ -7,6 +7,7 @@ namespace App
 
         protected int itemGridCellSize = 64; //pixels
         protected List<InventoryBagItem> items = new List<InventoryBagItem>();
+        protected Rect2? dropzoneIndicator = null;
         public override void _Ready()
         {
             this.SetMouseFilter(Control.MouseFilterEnum.Pass);
@@ -20,9 +21,10 @@ namespace App
         public override void _Input(InputEvent @event){
             if (@event is InputEventMouseMotion eventMouseMotion) {
                 if (InventoryInteraction.hasPickedUpItem()) {
-                    this.AcceptEvent();
+                    //this.AcceptEvent(); //handled in _GuiInput instead
                     InventoryBagItem item = InventoryInteraction.getPickedUpItem();
                     item.SetGlobalPosition(eventMouseMotion.GetGlobalPosition() - (item.GetCustomMinimumSize() / 2));
+                    this.Update();
                 }
             }
             if (@event is InputEventMouseButton eventMouseButton) {
@@ -37,10 +39,46 @@ namespace App
                                 GD.Print("place the item down");
                                 this.addItem(InventoryInteraction.getPickedUpItem(), this.localToCellPosition(this.GetLocalMousePosition()));
                                 InventoryInteraction.setPickedUpItem(null);
+                                this.dropzoneIndicator = null;
+                                this.Update();
                             }
                         }
                     }
                 }
+            }
+        }
+
+        public override void _GuiInput(InputEvent @event){
+            if (@event is InputEventMouseMotion eventMouseMotion) {
+                /**
+                 * we only want this to happen when the player is hovering over the inventory grid
+                 * which is what _GuiInput implicitly does
+                 */
+                if (InventoryInteraction.hasPickedUpItem()) {
+
+                    var relativeMousePosition = eventMouseMotion.Position;
+                    var targetCellPosition = this.localToCellPosition(relativeMousePosition);
+                    var item = InventoryInteraction.getPickedUpItem();
+
+                    this.dropzoneIndicator = new Rect2(this.cellPositionToLocal(targetCellPosition), item.GetCustomMinimumSize());
+                    this.AcceptEvent();
+                } else {
+                    if (this.dropzoneIndicator != null) {
+                        this.dropzoneIndicator = null;
+                    }
+                }
+            }
+        }
+
+        public override void _Draw() {
+            if (this.dropzoneIndicator != null) {
+                var style = new StyleBoxFlat();
+                //style.DrawCenter = false;
+                style.BgColor = new Color(0.5f, 0.5f, 0.5f, 0.2f);
+                style.BorderBlend = true;
+                style.BorderColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+                style.SetBorderWidthAll(2);
+                this.DrawStyleBox(style, (Rect2)this.dropzoneIndicator);
             }
         }
 
@@ -54,6 +92,7 @@ namespace App
                     // tmp.Position = new Vector2(this.itemGridCellSize * i, this.itemGridCellSize * j);
                     tmp.MarginLeft = this.itemGridCellSize * i;
                     tmp.MarginTop = this.itemGridCellSize * j;
+                    tmp.ShowBehindParent = true;
 
                     var sprite = new TextureRect();
                     sprite.Texture = texture;

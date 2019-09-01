@@ -128,13 +128,11 @@ namespace App
         }
 
         public void onMouseEntered() {
-            GD.Print("inventorybagitem mouse_entered");
             this.shouldHaveHoverBorder = true;
             this.Update();
         }
 
         public void onMouseExited() {
-            GD.Print("inventorybagitem mouse_exited");
             this.shouldHaveHoverBorder = false;
             this.Update();
         }
