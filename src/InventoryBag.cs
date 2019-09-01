@@ -13,9 +13,9 @@ namespace App
             this.SetMouseFilter(Control.MouseFilterEnum.Pass);
             this.initItemGrid(new Vector2(4, 6));
 
-            this.addItem(new InventoryBagItem(Util.imageToTexture("res://static/dummy-sword-inventory.png")));
-            this.addItem(new InventoryBagItem(Util.imageToTexture("res://static/dummy-sword-inventory.png")));
-            this.addItem(new InventoryBagItem(Util.imageToTexture("res://static/dummy-sword-inventory-1x2.png"), new Vector2(1, 2)));
+            this.addItem(new InventoryBagItem((Texture)GD.Load("res://static/dummy-sword-inventory.png")));
+            this.addItem(new InventoryBagItem((Texture)GD.Load("res://static/dummy-sword-inventory.png")));
+            this.addItem(new InventoryBagItem((Texture)GD.Load("res://static/dummy-sword-inventory-1x2.png"), new Vector2(1, 2)));
         }
 
         public override void _Input(InputEvent @event){
@@ -83,7 +83,7 @@ namespace App
         }
 
         protected void initItemGrid(Vector2 size) {
-            var texture = Util.imageToTexture("res://static/inventory-grid-item.png");
+            var texture = (Texture)GD.Load("res://static/inventory-grid-item.png");
 
             for(var i = 0; i < size.x; i++) {
                 for(var j = 0; j < size.y; j++) {
