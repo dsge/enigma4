@@ -15,6 +15,20 @@ namespace App
         public static bool justPickedUpItem = false;
 
         public static void setPickedUpItem(InventoryBagItem item = null, bool ignoreJustPickedUpItem = false) {
+            if (pickedUpItem != null){
+                /**
+                 * if we already had an item picked up but we are either
+                 * dropping it, or switching it to another item, then
+                 * notify the item that this is happening
+                 */
+                pickedUpItem.onDrop();
+            }
+            if (item != null) {
+                /**
+                 * notify the item that it was picked up
+                 */
+                item.onPickup();
+            }
             pickedUpItem = item;
             if (pickedUpItem != null && !ignoreJustPickedUpItem) {
                 justPickedUpItem = true;

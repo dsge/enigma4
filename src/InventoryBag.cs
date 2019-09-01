@@ -49,6 +49,7 @@ namespace App
             for(var i = 0; i < size.x; i++) {
                 for(var j = 0; j < size.y; j++) {
                     var tmp = new Control();
+                    tmp.SetName("ItemGridElement");
                     // tmp.Position = new Vector2(this.itemGridCellSize * i, this.itemGridCellSize * j);
                     tmp.MarginLeft = this.itemGridCellSize * i;
                     tmp.MarginTop = this.itemGridCellSize * j;
@@ -118,20 +119,22 @@ namespace App
          * @todo do not hardcode this in InventoryBagItem
          */
         protected int itemGridCellSize = 64;
+        protected bool shouldHaveHoverBorder = false;
         public override void _Ready()
         {
+            this.SetName("InventoryBagItem");
             this.SetMouseFilter(Control.MouseFilterEnum.Pass);
             this.AnchorLeft = 1;
             this.AnchorTop = 1;
             this.SetCustomMinimumSize(new Vector2(this.itemGridCellSize, this.itemGridCellSize));
+
             var sprite = new TextureRect();
             sprite.Texture = Util.imageToTexture("res://static/dummy-sword-inventory.png");
             sprite.SetAnchorsPreset(LayoutPreset.Wide);
-
-            /* var inventoryNode = new Control();
-            inventoryNode.SetMouseFilter(Control.MouseFilterEnum.Ignore);
-            inventoryNode.AddChild(sprite);*/
             this.AddChild(sprite);
+
+            this.Connect("mouse_entered", this, nameof(this.onMouseEntered));
+            this.Connect("mouse_exited", this, nameof(this.onMouseExited));
         }
 
         public override void _GuiInput(InputEvent @event){
@@ -185,8 +188,40 @@ namespace App
             this.cellPosition = position;
         }
 
-        public void onMouseEnter() {
-            GD.Print("inventorybagitem mouse_enter");
+        public override void _Draw(){
+
+            if (this.shouldHaveHoverBorder) {
+                var style = new StyleBoxFlat();
+                style.DrawCenter = false;
+                style.BorderBlend = true;
+                style.BorderColor = new Color(1, 1, 0, 1);
+                style.SetBorderWidthAll(3);
+                this.DrawStyleBox(style, new Rect2(new Vector2(0, 0), this.GetCustomMinimumSize()));
+            }
+        }
+
+        public void onPickup() {
+            this.Modulate = new Color(1, 1, 1, 0.5f);
+            this.shouldHaveHoverBorder = false;
+            this.Update();
+        }
+
+        public void onDrop() {
+            this.Modulate = new Color(1, 1, 1, 1);
+            this.shouldHaveHoverBorder = true;
+            this.Update();
+        }
+
+        public void onMouseEntered() {
+            GD.Print("inventorybagitem mouse_entered");
+            this.shouldHaveHoverBorder = true;
+            this.Update();
+        }
+
+        public void onMouseExited() {
+            GD.Print("inventorybagitem mouse_exited");
+            this.shouldHaveHoverBorder = false;
+            this.Update();
         }
     }
 }
