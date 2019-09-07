@@ -6,12 +6,12 @@ namespace App.Inventory
     /**
      * an InventoryItem's 3d node in the ground
      */
-    public class GroundNode : Spatial {
+    public class GroundNode: Spatial {
         protected MeshInstance meshInstance = null;
 
         public InventoryItem item = null;
 
-        public GroundNode(MeshInstance meshInstance) {
+        public GroundNode(MeshInstance meshInstance) : base() {
             this.meshInstance = meshInstance;
         }
         public override void _Ready() {

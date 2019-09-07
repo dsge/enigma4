@@ -30,6 +30,7 @@ namespace App.Inventory
             this.inventoryNodeCellSize = gridCellSize;
             if (groundNodeMeshInstance == null) {
                 groundNodeMeshInstance = (MeshInstance)((GD.Load<PackedScene>("res://scenes/item-on-ground.tscn")).Instance());
+                groundNodeMeshInstance.Scale = new Vector3(0.5f, 0.5f, 0.5f);
             }
             this.groundNodeMeshInstance = groundNodeMeshInstance;
         }

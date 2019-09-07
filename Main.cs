@@ -45,6 +45,13 @@ public class Main : Godot.Spatial
                 // this.playerCharacter.Translation = closestPoint;
             }
         }
+
+        if (map != null) {
+            var dummyItemOnTheGround = new App.Inventory.InventoryItem((Texture)GD.Load("res://static/dummy-sword-inventory-1x2.png"));
+            var groundNode = dummyItemOnTheGround.getGroundNode();
+            groundNode.Translation = new Vector3(12f, -1f, -12f);
+            map.AddChild(groundNode);
+        }
     }
 
     protected void generateNavigationMeshInstances(App.Navigation nav, Godot.Collections.Array nodes) {
