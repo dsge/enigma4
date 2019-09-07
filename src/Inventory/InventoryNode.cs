@@ -61,7 +61,7 @@ namespace App.Inventory
                                 /**
                                 * place the item down
                                 */
-                                GD.Print("place the item down");
+                                GD.Print("place the item down in inventory");
                                 // InventoryInteraction.setPickedUpItem(null);
                             } else {
                                 /**
@@ -76,7 +76,7 @@ namespace App.Inventory
                             /**
                              * if we are pointing at an inventory item with the mouse, then pick up that item
                              */
-                            GD.Print("picking up item...");
+                            GD.Print("picking up item from inventory...");
                             InventoryInteraction.setPickedUpItem(this.item);
                             this.SetGlobalPosition(eventMouseButton.GetGlobalPosition() - (this.GetCustomMinimumSize() / 2));
                         }
