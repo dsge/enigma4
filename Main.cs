@@ -45,8 +45,6 @@ public class Main : Godot.Spatial
                 // this.playerCharacter.Translation = closestPoint;
             }
         }
-
-
     }
 
     protected void generateNavigationMeshInstances(App.Navigation nav, Godot.Collections.Array nodes) {

@@ -6,7 +6,7 @@ namespace App.Inventory
     public class InventoryInteraction {
 
 
-        protected static InventoryBagItem pickedUpItem;
+        protected static InventoryItem pickedUpItem;
         /**
          * this prevents the player from picking up and placing down
          * the item in the next frame - he will need to release the mouse
@@ -14,20 +14,20 @@ namespace App.Inventory
          */
         public static bool justPickedUpItem = false;
 
-        public static void setPickedUpItem(InventoryBagItem item = null, bool ignoreJustPickedUpItem = false) {
+        public static void setPickedUpItem(InventoryItem item = null, bool ignoreJustPickedUpItem = false) {
             if (pickedUpItem != null){
                 /**
                  * if we already had an item picked up but we are either
                  * dropping it, or switching it to another item, then
                  * notify the item that this is happening
                  */
-                pickedUpItem.onDrop();
+                pickedUpItem.getInventoryNode().onDrop();
             }
             if (item != null) {
                 /**
                  * notify the item that it was picked up
                  */
-                item.onPickup();
+                item.getInventoryNode().onPickup();
             }
             pickedUpItem = item;
             if (pickedUpItem != null && !ignoreJustPickedUpItem) {
@@ -35,7 +35,7 @@ namespace App.Inventory
             }
         }
 
-        public static InventoryBagItem getPickedUpItem() {
+        public static InventoryItem getPickedUpItem() {
             return pickedUpItem;
         }
 

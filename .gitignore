@@ -12,3 +12,4 @@ export.cfg
 .vscode/
 build/
 /vendor/
+/blender/

@@ -3,17 +3,15 @@ using Godot;
 
 namespace App.Inventory
 {
-    public interface InventoryBagItemInterface {
-        Vector2 getCellPosition();
-        void setCellPosition(Vector2 position);
-    }
-
-    public class InventoryBagItem : Control {
+    /**
+     * an InventoryItem's 2d node in the inventory
+     */
+    public class InventoryNode : Control {
         protected Vector2 cellPosition;
         /**
          * in pixels
          *
-         * @todo do not hardcode this in InventoryBagItem
+         * @todo do not hardcode this in InventoryNode
          */
         protected int itemGridCellSize = 64;
         /**
@@ -21,9 +19,10 @@ namespace App.Inventory
          */
         protected Vector2 gridCellSize;
         protected TextureRect sprite;
+        public InventoryItem item = null;
         protected bool shouldHaveHoverBorder = false;
 
-        public InventoryBagItem(Texture texture, Vector2? gridCellSize = null) : base() {
+        public InventoryNode(Texture texture, Vector2? gridCellSize = null) : base() {
             if (gridCellSize == null) {
                 gridCellSize = new Vector2(1, 1);
             }
@@ -49,6 +48,8 @@ namespace App.Inventory
 
             this.Connect("mouse_entered", this, nameof(this.onMouseEntered));
             this.Connect("mouse_exited", this, nameof(this.onMouseExited));
+
+            this.SetTooltip("foo bar");
         }
 
         public override void _GuiInput(InputEvent @event){
@@ -76,7 +77,7 @@ namespace App.Inventory
                              * if we are pointing at an inventory item with the mouse, then pick up that item
                              */
                             GD.Print("picking up item...");
-                            InventoryInteraction.setPickedUpItem(this);
+                            InventoryInteraction.setPickedUpItem(this.item);
                             this.SetGlobalPosition(eventMouseButton.GetGlobalPosition() - (this.GetCustomMinimumSize() / 2));
                         }
                     } else {

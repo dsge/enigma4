@@ -6,24 +6,24 @@ namespace App.Inventory
     public class InventoryBag: Control {
 
         protected int itemGridCellSize = 64; //pixels
-        protected List<InventoryBagItem> items = new List<InventoryBagItem>();
+        protected List<InventoryItem> items = new List<InventoryItem>();
         protected Rect2? dropzoneIndicator = null;
         public override void _Ready()
         {
             this.SetMouseFilter(Control.MouseFilterEnum.Pass);
             this.initItemGrid(new Vector2(4, 6));
 
-            this.addItem(new InventoryBagItem((Texture)GD.Load("res://static/dummy-sword-inventory.png")));
-            this.addItem(new InventoryBagItem((Texture)GD.Load("res://static/dummy-sword-inventory.png")));
-            this.addItem(new InventoryBagItem((Texture)GD.Load("res://static/dummy-sword-inventory-1x2.png"), new Vector2(1, 2)));
+            this.addItem(new InventoryItem((Texture)GD.Load("res://static/dummy-sword-inventory.png")));
+            this.addItem(new InventoryItem((Texture)GD.Load("res://static/dummy-sword-inventory.png")));
+            this.addItem(new InventoryItem((Texture)GD.Load("res://static/dummy-sword-inventory-1x2.png"), new Vector2(1, 2)));
         }
 
         public override void _Input(InputEvent @event){
             if (@event is InputEventMouseMotion eventMouseMotion) {
                 if (InventoryInteraction.hasPickedUpItem()) {
                     //this.AcceptEvent(); //handled in _GuiInput instead
-                    InventoryBagItem item = InventoryInteraction.getPickedUpItem();
-                    item.SetGlobalPosition(eventMouseMotion.GetGlobalPosition() - (item.GetCustomMinimumSize() / 2));
+                    InventoryItem item = InventoryInteraction.getPickedUpItem();
+                    item.getInventoryNode().SetGlobalPosition(eventMouseMotion.GetGlobalPosition() - (item.getInventoryNode().GetCustomMinimumSize() / 2));
                     this.Update();
                 }
             }
@@ -60,7 +60,7 @@ namespace App.Inventory
                     var targetCellPosition = this.localToCellPosition(relativeMousePosition);
                     var item = InventoryInteraction.getPickedUpItem();
 
-                    this.dropzoneIndicator = new Rect2(this.cellPositionToLocal(targetCellPosition), item.GetCustomMinimumSize());
+                    this.dropzoneIndicator = new Rect2(this.cellPositionToLocal(targetCellPosition), item.getInventoryNode().GetCustomMinimumSize());
                     this.AcceptEvent();
                 } else {
                     if (this.dropzoneIndicator != null) {
@@ -102,14 +102,15 @@ namespace App.Inventory
             }
         }
 
-        public void addItem(InventoryBagItem item, Vector2? forceCellPosition = null) {
-            item.setCellPosition(calculateNextOpenCellPosition(forceCellPosition));
+        public void addItem(InventoryItem item, Vector2? forceCellPosition = null) {
+            var inventoryNode = item.getInventoryNode();
+            inventoryNode.setCellPosition(calculateNextOpenCellPosition(forceCellPosition));
 
-            var position = this.cellPositionToLocal(item.getCellPosition());
-            item.MarginLeft = position.x;
-            item.MarginTop = position.y;
+            var position = this.cellPositionToLocal(inventoryNode.getCellPosition());
+            inventoryNode.MarginLeft = position.x;
+            inventoryNode.MarginTop = position.y;
             if (!this.hasItem(item)) {
-                this.AddChild(item);
+                this.AddChild(inventoryNode);
                 this.items.Add(item);
             }
         }
@@ -121,11 +122,11 @@ namespace App.Inventory
             return new Vector2(this.items.Count, 0);
         }
 
-        public bool hasItem(InventoryBagItem item) {
+        public bool hasItem(InventoryItem item) {
             return this.items.Contains(item);
         }
 
-        public void removeItem(InventoryBagItem item) {
+        public void removeItem(InventoryItem item) {
             this.items.Remove(item);
         }
 
