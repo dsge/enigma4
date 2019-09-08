@@ -156,20 +156,26 @@ public class Main : Godot.Spatial
                     }
                 }
 
-                if (/*obj is StaticBody staticBody &&*/ this.playerCharacter != null && this.navigation != null) {
-                    Vector3 to = (Vector3)result["position"];
-                    Vector3 from = this.navigation.GetClosestPoint(this.playerCharacter.Translation);
+                var grandParent = ((Godot.Spatial)result["collider"]).GetNode<Godot.Spatial>("../..");
 
-                    var path = this.navigation.GetSimplePath(
-                        from,
-                        to
-                    );
-                    if (path.Length > 1) {
-                        this.playerMovementPath = new List<Vector3>(path);
-                        GD.Print("path found");
-                    } else {
-                        this.playerMovementPath = null;
-                        GD.Print("path not found");
+                if (grandParent != null && grandParent is App.Inventory.GroundNode groundItem) {
+                    GD.Print("FOOO");
+                } else {
+                    if (/*obj is StaticBody staticBody &&*/ this.playerCharacter != null && this.navigation != null) {
+                        Vector3 to = (Vector3)result["position"];
+                        Vector3 from = this.navigation.GetClosestPoint(this.playerCharacter.Translation);
+
+                        var path = this.navigation.GetSimplePath(
+                            from,
+                            to
+                        );
+                        if (path.Length > 1) {
+                            this.playerMovementPath = new List<Vector3>(path);
+                            GD.Print("path found");
+                        } else {
+                            this.playerMovementPath = null;
+                            GD.Print("path not found");
+                        }
                     }
                 }
 

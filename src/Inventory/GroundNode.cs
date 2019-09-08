@@ -10,12 +10,21 @@ namespace App.Inventory
         protected MeshInstance meshInstance = null;
 
         public InventoryItem item = null;
+        public bool shouldHaveHoverEffects = false;
 
         public GroundNode(MeshInstance meshInstance) : base() {
             this.meshInstance = meshInstance;
         }
         public override void _Ready() {
             this.AddChild(this.meshInstance);
+        }
+
+        public void onMouseEntered() {
+            this.shouldHaveHoverEffects = true;
+        }
+
+        public void onMouseExited() {
+            this.shouldHaveHoverEffects = false;
         }
     }
 }
