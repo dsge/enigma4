@@ -20,10 +20,11 @@ namespace App.Inventory
 
         public override void _Input(InputEvent @event){
             if (@event is InputEventMouseMotion eventMouseMotion) {
+                /**
+                 * when the mouse is moved while the user has something picked up then we will want to redraw the inventorybag UI
+                 */
                 if (((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).hasPickedUpItem()) {
                     //this.AcceptEvent(); //handled in _GuiInput instead
-                    InventoryItem item = ((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).getPickedUpItem();
-                    item.getInventoryNode().SetGlobalPosition(eventMouseMotion.GetGlobalPosition() - (item.getInventoryNode().GetCustomMinimumSize() / 2));
                     this.Update();
                 }
             }
@@ -61,7 +62,7 @@ namespace App.Inventory
                     var item = ((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).getPickedUpItem();
 
                     this.dropzoneIndicator = new Rect2(this.cellPositionToLocal(targetCellPosition), item.getInventoryNode().GetCustomMinimumSize());
-                    this.AcceptEvent();
+                    // this.AcceptEvent();
                 } else {
                     if (this.dropzoneIndicator != null) {
                         this.dropzoneIndicator = null;

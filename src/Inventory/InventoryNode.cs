@@ -31,6 +31,7 @@ namespace App.Inventory
             var sprite = new TextureRect();
             sprite.Texture = texture;
             sprite.SetAnchorsPreset(LayoutPreset.Wide);
+            sprite.SetMouseFilter(MouseFilterEnum.Ignore);
             this.sprite = sprite;
         }
         public override void _Ready()
@@ -49,7 +50,11 @@ namespace App.Inventory
             this.Connect("mouse_entered", this, nameof(this.onMouseEntered));
             this.Connect("mouse_exited", this, nameof(this.onMouseExited));
 
-            this.SetTooltip("foo bar");
+            // this.SetTooltip("foo bar");
+        }
+
+        public Control getMouseDragNode() {
+            return this.sprite;
         }
 
         public override void _GuiInput(InputEvent @event){
@@ -77,7 +82,7 @@ namespace App.Inventory
                              * if we are pointing at an inventory item with the mouse, then pick up that item
                              */
                             GD.Print("picking up item from inventory...");
-                            ((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).setPickedUpItem(this.item);
+                            ((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).setPickedUpItem(this.item, this.GetParent<InventoryBag>());
                             this.SetGlobalPosition(eventMouseButton.GetGlobalPosition() - (this.GetCustomMinimumSize() / 2));
                         }
                     } else {
@@ -116,13 +121,13 @@ namespace App.Inventory
             }
         }
 
-        public void onPickup() {
+        public void onPickup(InventoryBag bag = null) {
             this.Modulate = new Color(1, 1, 1, 0.5f);
             this.shouldHaveHoverBorder = false;
             this.Update();
         }
 
-        public void onDrop() {
+        public void onDrop(InventoryBag bag = null) {
             this.Modulate = new Color(1, 1, 1, 1);
             this.shouldHaveHoverBorder = true;
             this.Update();
