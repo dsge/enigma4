@@ -3,18 +3,18 @@ using App;
 
 namespace App.Inventory
 {
-    public class InventoryInteraction {
+    public class InventoryInteraction: Control {
 
 
-        protected static InventoryItem pickedUpItem;
+        protected InventoryItem pickedUpItem;
         /**
          * this prevents the player from picking up and placing down
          * the item in the next frame - he will need to release the mouse
          * button and press it again to place the item
          */
-        public static bool justPickedUpItem = false;
+        public bool justPickedUpItem = false;
 
-        public static void setPickedUpItem(InventoryItem item = null, bool ignoreJustPickedUpItem = false) {
+        public void setPickedUpItem(InventoryItem item = null, bool ignoreJustPickedUpItem = false) {
             if (pickedUpItem != null){
                 /**
                  * if we already had an item picked up but we are either
@@ -35,11 +35,11 @@ namespace App.Inventory
             }
         }
 
-        public static InventoryItem getPickedUpItem() {
+        public InventoryItem getPickedUpItem() {
             return pickedUpItem;
         }
 
-        public static bool hasPickedUpItem() {
+        public bool hasPickedUpItem() {
             return pickedUpItem != null;
         }
     }

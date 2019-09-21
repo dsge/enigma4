@@ -20,6 +20,10 @@ run/main_scene="res://main.tscn"
 boot_splash/image="res://loading.png"
 config/icon="res://icon.png"
 
+[autoload]
+
+InventoryInteraction="*res://src/Inventory/InventoryInteraction.cs"
+
 [input]
 
 ui_left={
