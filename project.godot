@@ -22,7 +22,7 @@ config/icon="res://static/icon.png"
 
 [autoload]
 
-InventoryInteraction="*res://src/Inventory/InventoryInteraction.cs"
+InventoryInteraction="*res://src/App/Inventory/InventoryInteraction.cs"
 
 [input]
 
