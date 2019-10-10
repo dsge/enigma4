@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://Main.cs" type="Script" id=1]
+[ext_resource path="res://src/Main.cs" type="Script" id=1]
 [ext_resource path="res://scenes/PlayerCharacter.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/PlayerCamera.cs" type="Script" id=3]
 [ext_resource path="res://scenes/Floor.tscn" type="PackedScene" id=4]
