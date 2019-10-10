@@ -18,37 +18,6 @@ namespace App.Inventory
             this.addItem(new InventoryItem((Texture)GD.Load("res://static/dummy-sword-inventory-1x2.png"), new Vector2(1, 2)));
         }
 
-        public override void _Input(InputEvent @event){
-            if (@event is InputEventMouseMotion eventMouseMotion) {
-                /**
-                 * when the mouse is moved while the user has something picked up then we will want to redraw the inventorybag UI
-                 */
-                if (((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).hasPickedUpItem()) {
-                    //this.AcceptEvent(); //handled in _GuiInput instead
-                    this.Update();
-                }
-            }
-            if (@event is InputEventMouseButton eventMouseButton) {
-                if (eventMouseButton.ButtonIndex == 1) {
-                    if (eventMouseButton.Pressed) {
-                        if (((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).hasPickedUpItem()) {
-                            if (!((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).justPickedUpItem) {
-                                /**
-                                * place the item down
-                                */
-                                this.AcceptEvent();
-                                GD.Print("place the item down");
-                                this.addItem(((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).getPickedUpItem(), this.localToCellPosition(this.GetLocalMousePosition()));
-                                ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).setPickedUpItem(null);
-                                this.dropzoneIndicator = null;
-                                this.Update();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         public override void _GuiInput(InputEvent @event){
             if (@event is InputEventMouseMotion eventMouseMotion) {
                 /**
@@ -66,6 +35,35 @@ namespace App.Inventory
                 } else {
                     if (this.dropzoneIndicator != null) {
                         this.dropzoneIndicator = null;
+                    }
+                }
+
+                /**
+                 * when the mouse is moved while the user has something picked up then we will want to redraw the inventorybag UI
+                 */
+                if (((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).hasPickedUpItem()) {
+                    //this.AcceptEvent(); //handled in _GuiInput instead
+                    this.Update();
+                }
+            }
+
+            if (@event is InputEventMouseButton eventMouseButton) {
+                if (eventMouseButton.ButtonIndex == 1) {
+                    if (eventMouseButton.Pressed) {
+                        if (((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).hasPickedUpItem()) {
+                            //if (!((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).justPickedUpItem) {
+                                /**
+                                * place the item down
+                                */
+                                this.AcceptEvent();
+                                GD.Print("place the item down");
+                                var item = ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).getPickedUpItem();
+                                ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).setPickedUpItem(null);
+                                this.addItem(item, this.localToCellPosition(this.GetLocalMousePosition()));
+                                this.dropzoneIndicator = null;
+                                this.Update();
+                            //}
+                        }
                     }
                 }
             }
@@ -89,6 +87,7 @@ namespace App.Inventory
             for(var i = 0; i < size.x; i++) {
                 for(var j = 0; j < size.y; j++) {
                     var tmp = new Control();
+                    tmp.SetMouseFilter(MouseFilterEnum.Pass);
                     tmp.SetName("ItemGridElement");
                     // tmp.Position = new Vector2(this.itemGridCellSize * i, this.itemGridCellSize * j);
                     tmp.MarginLeft = this.itemGridCellSize * i;
@@ -111,8 +110,20 @@ namespace App.Inventory
             inventoryNode.MarginLeft = position.x;
             inventoryNode.MarginTop = position.y;
             if (!this.hasItem(item)) {
-                this.AddChild(inventoryNode);
                 this.items.Add(item);
+            }
+
+            var parent = inventoryNode.GetParentOrNull<Node>();
+            if (parent != null) {
+                if (parent != this) {
+                    parent.RemoveChild(inventoryNode);
+                } else {
+                    /**
+                     * already at the right place, no need to change anything
+                     */
+                }
+            } else {
+                this.AddChild(inventoryNode);
             }
         }
 

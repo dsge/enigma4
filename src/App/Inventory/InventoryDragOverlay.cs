@@ -44,6 +44,8 @@ namespace App.Inventory
                     parent.RemoveChild(item.getInventoryNode());
                 }
                 this.mouseDragNode = (Control)(item.getInventoryNode().getMouseDragNode().Duplicate());
+                this.mouseDragNode.SetMouseFilter(Control.MouseFilterEnum.Ignore);
+                this.mouseDragNode.SetGlobalPosition(this.GetViewport().GetMousePosition() - (item.getInventoryNode().GetCustomMinimumSize() / 2));
                 this.AddChild(this.mouseDragNode);
             }
             pickedUpItem = item;

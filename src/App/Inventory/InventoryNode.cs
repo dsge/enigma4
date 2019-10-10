@@ -61,42 +61,11 @@ namespace App.Inventory
             if (@event is InputEventMouseButton eventMouseButton) {
                 if (eventMouseButton.ButtonIndex == 1) {
                     if (eventMouseButton.Pressed) {
-                        if (((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).hasPickedUpItem()) {
-                            if (!((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).justPickedUpItem) {
-                                /**
-                                * place the item down
-                                */
-                                GD.Print("place the item down in inventory");
-                                // ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).setPickedUpItem(null);
-                            } else {
-                                /**
-                                * the player picked this item up but did not release it just yet
-                                * drag the item on the screen but do not drop it yet
-                                *
-                                * godot does not actually calls this, because it only calls _GuiInput when
-                                * there was a change and not when the user keeps a mouse pressed
-                                */
-                            }
-                        } else {
-                            /**
-                             * if we are pointing at an inventory item with the mouse, then pick up that item
-                             */
-                            GD.Print("picking up item from inventory...");
-                            ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).setPickedUpItem(this.item, this.GetParent<InventoryBag>());
-                            this.SetGlobalPosition(eventMouseButton.GetGlobalPosition() - (this.GetCustomMinimumSize() / 2));
-                        }
-                    } else {
                         /**
-                         * the player just released LMB
+                         * if we are pointing at an inventory item with the mouse, then pick up that item
                          */
-                        if (((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).hasPickedUpItem()) {
-                            /**
-                            * the player let go of the mouse - we should remember
-                            * that when the next time he presses the mouse we want to drop the item
-                            * that he's holding
-                            */
-                            ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).justPickedUpItem = false;
-                        }
+                        GD.Print("picking up item from inventory...");
+                        ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).setPickedUpItem(this.item, this.GetParent<InventoryBag>());
                     }
                 }
             }
