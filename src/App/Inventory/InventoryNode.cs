@@ -61,13 +61,13 @@ namespace App.Inventory
             if (@event is InputEventMouseButton eventMouseButton) {
                 if (eventMouseButton.ButtonIndex == 1) {
                     if (eventMouseButton.Pressed) {
-                        if (((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).hasPickedUpItem()) {
-                            if (!((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).justPickedUpItem) {
+                        if (((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).hasPickedUpItem()) {
+                            if (!((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).justPickedUpItem) {
                                 /**
                                 * place the item down
                                 */
                                 GD.Print("place the item down in inventory");
-                                // ((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).setPickedUpItem(null);
+                                // ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).setPickedUpItem(null);
                             } else {
                                 /**
                                 * the player picked this item up but did not release it just yet
@@ -82,20 +82,20 @@ namespace App.Inventory
                              * if we are pointing at an inventory item with the mouse, then pick up that item
                              */
                             GD.Print("picking up item from inventory...");
-                            ((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).setPickedUpItem(this.item, this.GetParent<InventoryBag>());
+                            ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).setPickedUpItem(this.item, this.GetParent<InventoryBag>());
                             this.SetGlobalPosition(eventMouseButton.GetGlobalPosition() - (this.GetCustomMinimumSize() / 2));
                         }
                     } else {
                         /**
                          * the player just released LMB
                          */
-                        if (((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).hasPickedUpItem()) {
+                        if (((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).hasPickedUpItem()) {
                             /**
                             * the player let go of the mouse - we should remember
                             * that when the next time he presses the mouse we want to drop the item
                             * that he's holding
                             */
-                            ((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).justPickedUpItem = false;
+                            ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).justPickedUpItem = false;
                         }
                     }
                 }

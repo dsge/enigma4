@@ -22,7 +22,7 @@ config/icon="res://static/icon.png"
 
 [autoload]
 
-InventoryInteraction="*res://src/App/Inventory/InventoryInteraction.cs"
+InventoryDragOverlay="*res://src/App/Inventory/InventoryDragOverlay.cs"
 
 [input]
 

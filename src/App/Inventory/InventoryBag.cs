@@ -23,7 +23,7 @@ namespace App.Inventory
                 /**
                  * when the mouse is moved while the user has something picked up then we will want to redraw the inventorybag UI
                  */
-                if (((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).hasPickedUpItem()) {
+                if (((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).hasPickedUpItem()) {
                     //this.AcceptEvent(); //handled in _GuiInput instead
                     this.Update();
                 }
@@ -31,15 +31,15 @@ namespace App.Inventory
             if (@event is InputEventMouseButton eventMouseButton) {
                 if (eventMouseButton.ButtonIndex == 1) {
                     if (eventMouseButton.Pressed) {
-                        if (((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).hasPickedUpItem()) {
-                            if (!((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).justPickedUpItem) {
+                        if (((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).hasPickedUpItem()) {
+                            if (!((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).justPickedUpItem) {
                                 /**
                                 * place the item down
                                 */
                                 this.AcceptEvent();
                                 GD.Print("place the item down");
-                                this.addItem(((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).getPickedUpItem(), this.localToCellPosition(this.GetLocalMousePosition()));
-                                ((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).setPickedUpItem(null);
+                                this.addItem(((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).getPickedUpItem(), this.localToCellPosition(this.GetLocalMousePosition()));
+                                ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).setPickedUpItem(null);
                                 this.dropzoneIndicator = null;
                                 this.Update();
                             }
@@ -55,11 +55,11 @@ namespace App.Inventory
                  * we only want this to happen when the player is hovering over the inventory grid
                  * which is what _GuiInput implicitly does
                  */
-                if (((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).hasPickedUpItem()) {
+                if (((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).hasPickedUpItem()) {
 
                     var relativeMousePosition = eventMouseMotion.Position;
                     var targetCellPosition = this.localToCellPosition(relativeMousePosition);
-                    var item = ((App.Inventory.InventoryInteraction)GetNode("/root/InventoryInteraction")).getPickedUpItem();
+                    var item = ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).getPickedUpItem();
 
                     this.dropzoneIndicator = new Rect2(this.cellPositionToLocal(targetCellPosition), item.getInventoryNode().GetCustomMinimumSize());
                     // this.AcceptEvent();

@@ -3,7 +3,7 @@ using App;
 
 namespace App.Inventory
 {
-    public class InventoryInteraction: CanvasLayer {
+    public class InventoryDragOverlay: CanvasLayer {
 
 
         protected InventoryItem pickedUpItem;
