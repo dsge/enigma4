@@ -47,7 +47,7 @@ public class Main : Godot.Spatial
         }
 
         if (map != null) {
-            var dummyItemOnTheGround = new App.Inventory.InventoryItem((Texture)GD.Load("res://static/dummy-sword-inventory-1x2.png"));
+            var dummyItemOnTheGround = new App.Inventory.InventoryItem((Texture)GD.Load("res://static/dummy-sword-inventory-1x2.png"), new Vector2(1, 2));
             var groundNode = dummyItemOnTheGround.getGroundNode();
             groundNode.Translation = new Vector3(12f, -1f, -12f);
             map.AddChild(groundNode);
@@ -159,7 +159,7 @@ public class Main : Godot.Spatial
                 var grandParent = ((Godot.Spatial)result["collider"]).GetNode<Godot.Spatial>("../..");
 
                 if (grandParent != null && grandParent is App.Inventory.GroundNode groundItem) {
-                    GD.Print("FOOO");
+                    // GD.Print("FOOO");
                 } else {
                     if (/*obj is StaticBody staticBody &&*/ this.playerCharacter != null && this.navigation != null) {
                         Vector3 to = (Vector3)result["position"];

@@ -17,7 +17,7 @@ namespace App.Inventory
             Godot.Collections.Array children = meshInstance.GetChildren();
             foreach (var child in children) {
                 if (child is CollisionObject collider) {
-                    //collider.Connect("input_event", this, nameof(this.foo));
+                    collider.Connect("input_event", this, nameof(this.onInputEvent));
                     collider.Connect("mouse_entered", this, nameof(this.onMouseEntered));
                     collider.Connect("mouse_exited", this, nameof(this.onMouseExited));
                     break;
@@ -26,8 +26,16 @@ namespace App.Inventory
             // meshInstance.MaterialOverride = new
         }
 
-        public void foo(Node camera, InputEvent e, Vector3 click_position, Vector3 click_normal, int shape_idx) {
-            GD.Print("AAYYYYYYY");
+        public void onInputEvent(Node camera, InputEvent @event, Vector3 click_position, Vector3 click_normal, int shape_idx) {
+            if (@event is InputEventMouseButton eventMouseButton) {
+                if (eventMouseButton.ButtonIndex == 1) {
+                    if (eventMouseButton.Pressed) {
+                        GD.Print("picking up item from the ground...");
+                        ((App.Inventory.InventoryDragOverlay)GetNode("/root/InventoryDragOverlay")).setPickedUpItem(this.item);
+                        this.GetParent<Node>().RemoveChild(this);
+                    }
+                }
+            }
         }
 
         public void onMouseEntered() {
