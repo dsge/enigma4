@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/prop_wall_chains.obj-fb6b8aff1f3a787c00dc921cd74cbde4.mesh"
+
+[deps]
+
+files=[ "res://.import/prop_wall_chains.obj-fb6b8aff1f3a787c00dc921cd74cbde4.mesh" ]
+
+source_file="res://objects/3rdparty/Dungeon Set 2/prop_wall_chains.obj"
+dest_files=[ "res://.import/prop_wall_chains.obj-fb6b8aff1f3a787c00dc921cd74cbde4.mesh", "res://.import/prop_wall_chains.obj-fb6b8aff1f3a787c00dc921cd74cbde4.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

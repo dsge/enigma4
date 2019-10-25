@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/prop_floor_brazier.obj-c11954f9bf296d657e6bedf497ffd1ad.mesh"
+
+[deps]
+
+files=[ "res://.import/prop_floor_brazier.obj-c11954f9bf296d657e6bedf497ffd1ad.mesh" ]
+
+source_file="res://objects/3rdparty/Dungeon Set 2/prop_floor_brazier.obj"
+dest_files=[ "res://.import/prop_floor_brazier.obj-c11954f9bf296d657e6bedf497ffd1ad.mesh", "res://.import/prop_floor_brazier.obj-c11954f9bf296d657e6bedf497ffd1ad.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/struct_wall_cell_door_main.obj-50563ebf952ebc5b33ab09502b85edbc.mesh"
+
+[deps]
+
+files=[ "res://.import/struct_wall_cell_door_main.obj-50563ebf952ebc5b33ab09502b85edbc.mesh" ]
+
+source_file="res://objects/3rdparty/Dungeon Set 2/struct_wall_cell_door_main.obj"
+dest_files=[ "res://.import/struct_wall_cell_door_main.obj-50563ebf952ebc5b33ab09502b85edbc.mesh", "res://.import/struct_wall_cell_door_main.obj-50563ebf952ebc5b33ab09502b85edbc.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

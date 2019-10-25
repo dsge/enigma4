@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/struct_large_wall_incline_end_cap.obj-a2f8eec5f52407c8b5f731b5ec995671.mesh"
+
+[deps]
+
+files=[ "res://.import/struct_large_wall_incline_end_cap.obj-a2f8eec5f52407c8b5f731b5ec995671.mesh" ]
+
+source_file="res://objects/3rdparty/Dungeon Set 2/struct_large_wall_incline_end_cap.obj"
+dest_files=[ "res://.import/struct_large_wall_incline_end_cap.obj-a2f8eec5f52407c8b5f731b5ec995671.mesh", "res://.import/struct_large_wall_incline_end_cap.obj-a2f8eec5f52407c8b5f731b5ec995671.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true
