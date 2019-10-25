@@ -13,3 +13,4 @@ export.cfg
 build/
 /vendor/
 /blender/
+/\!dev
