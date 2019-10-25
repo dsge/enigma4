@@ -97,14 +97,14 @@ public class Main : Godot.Spatial
     }
 
     public override void _UnhandledInput(InputEvent @event){
-        if (@event is InputEventMouseButton eventMouseButton) {
+        /*if (@event is InputEventMouseButton eventMouseButton) {
             if (eventMouseButton.ButtonIndex == 1 && eventMouseButton.Pressed) {
                 var rayLength = 1000;
                 var camera = this.mainCamera;
                 this.raycastFrom = camera.ProjectRayOrigin(eventMouseButton.Position);
                 this.raycastTo = raycastFrom + camera.ProjectRayNormal(eventMouseButton.Position) * rayLength;
             }
-        }
+        }*/
 
         if (@event is InputEventKey eventKey) {
             if (eventKey.Pressed && eventKey.Scancode == (int)KeyList.I) {
