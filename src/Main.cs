@@ -86,7 +86,7 @@ public class Main : Godot.Spatial
                     this.immediateGeometry.AddVertex(
                         new Vector3(
                             this.playerMovementPath[i].x,
-                            this.playerMovementPath[i].y + 1f,
+                            this.playerMovementPath[i].y + 0.1f,
                             this.playerMovementPath[i].z
                         )
                     );
@@ -97,14 +97,14 @@ public class Main : Godot.Spatial
     }
 
     public override void _UnhandledInput(InputEvent @event){
-        /*if (@event is InputEventMouseButton eventMouseButton) {
+        if (@event is InputEventMouseButton eventMouseButton) {
             if (eventMouseButton.ButtonIndex == 1 && eventMouseButton.Pressed) {
                 var rayLength = 1000;
                 var camera = this.mainCamera;
                 this.raycastFrom = camera.ProjectRayOrigin(eventMouseButton.Position);
                 this.raycastTo = raycastFrom + camera.ProjectRayNormal(eventMouseButton.Position) * rayLength;
             }
-        }*/
+        }
 
         if (@event is InputEventKey eventKey) {
             if (eventKey.Pressed && eventKey.Scancode == (int)KeyList.I) {
@@ -192,7 +192,7 @@ public class Main : Godot.Spatial
 
         if (this.playerMovementPath != null && this.playerCharacter != null) {
             Vector3 targetPoint = new Vector3(this.playerMovementPath[1]);
-            var speed = 10f;
+            var speed = 3f;
             var targetDirection = this.playerCharacter.ToLocal(targetPoint).Normalized();
             var collision = this.playerCharacter.MoveAndSlide(targetDirection * speed);
             var isOnFloor = this.playerCharacter.IsOnFloor();

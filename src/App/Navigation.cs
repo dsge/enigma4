@@ -15,6 +15,7 @@ namespace App
             return toPoint;
         }
         new public Vector3[] GetSimplePath(Vector3 start, Vector3 end, bool optimize = true){
+            end.y = 0f;
             return new Vector3[] {start, end};
         }
     }
