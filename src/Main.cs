@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using App;
 // using SharpNav.Geometry;
 
+public class Foo {
+    public string Name = "";
+}
+
 public class Main : Godot.Spatial
 {
 
@@ -20,6 +24,15 @@ public class Main : Godot.Spatial
     protected Control characterScreen = null;
     public override void _Ready()
     {
+
+        string json = @"{
+            'Name': 'Bad Boys'
+        }";
+
+        Foo m = Newtonsoft.Json.JsonConvert.DeserializeObject<Foo>(json);
+        GD.Print("aaaaaa");
+        GD.Print(m.Name);
+
         GD.Print("This is the same as overriding _Ready()... 2");
 
         /*var foo = new Triangle3(
