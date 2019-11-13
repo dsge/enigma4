@@ -3,8 +3,15 @@ using System;
 using Godot.Collections;
 using System.Collections.Generic;
 using App;
+using Newtonsoft.Json;
 // using SharpNav.Geometry;
-
+public class Account
+{
+    public string Email { get; set; }
+    public bool Active { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public IList<string> Roles { get; set; }
+}
 public class Main : Godot.Spatial
 {
 
@@ -21,6 +28,31 @@ public class Main : Godot.Spatial
     public override void _Ready()
     {
         GD.Print("This is the same as overriding _Ready()... 2");
+
+        Account account = new Account
+        {
+            Email = "james@example.com",
+            Active = true,
+            CreatedDate = new DateTime(2013, 1, 20, 0, 0, 0, DateTimeKind.Utc),
+            Roles = new List<string>
+            {
+                "User",
+                "Admin"
+            }
+        };
+
+        string json = JsonConvert.SerializeObject(account, Formatting.Indented);
+        // {
+        //   "Email": "james@example.com",
+        //   "Active": true,
+        //   "CreatedDate": "2013-01-20T00:00:00Z",
+        //   "Roles": [
+        //     "User",
+        //     "Admin"
+        //   ]
+        // }
+
+        GD.Print(json);
 
         /*var foo = new Triangle3(
             new SharpNav.Vector3(0, 0, 0),
