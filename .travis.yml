@@ -1,18 +1,24 @@
 language: minimal
-dist: xenial
+dist: bionic
+sudo: yes
+services:
+  - docker
 before_install:
-  - sudo apt-get update && sudo apt-get -y install unzip
-  - wget https://downloads.tuxfamily.org/godotengine/3.1/mono/Godot_v3.1-stable_mono_x11_64.zip
-  - unzip Godot_v3.1-stable_mono_x11_64.zip -d ${HOME}/godot
-  - export GODOT=${HOME}/godot/Godot_v3.1-stable_mono_x11_64/Godot_v3.1-stable_mono_x11.64  
-  - echo $GODOT
+  - mkdir -p ${HOME}/github-builds/linux
+  - mkdir -p ${HOME}/github-builds/windows
+  - docker run --rm -it -v ${TRAVIS_BUILD_DIR}/:/app mono:6.6 mono /app/.paket/paket.exe restore
 script:
-  - mkdir ${HOME}/github-builds
-  - mkdir ${HOME}/github-builds/linux
-  - mkdir ${HOME}/github-builds/windows
-  - $GODOT --path ${TRAVIS_BUILD_DIR} --export "Linux/X11" ${HOME}/github-builds/linux
-  - $GODOT --path ${TRAVIS_BUILD_DIR} --export "Windows Desktop" ${HOME}/github-builds/windows
-  - cd ${HOME}/github-builds/linux
-  - ls
-  - cd ${HOME}/github-builds/windows
-  - ls
+  - docker run \
+      --rm \
+      -it \
+      -v ${TRAVIS_BUILD_DIR}:/app \
+      -v ${HOME}/github-builds/windows/:/output \
+      gerx03/godot-mono-headless --path /app --export "Windows Desktop" /output/app.exe
+  - docker run \
+      --rm \
+      -it \
+      -v ${TRAVIS_BUILD_DIR}:/app \
+      -v ${HOME}/github-builds/windows/:/output \
+      gerx03/godot-mono-headless --path /app --export "Linux/X11" /output/app
+  - ls ${HOME}/github-builds/linux
+  - ls ${HOME}/github-builds/windows
