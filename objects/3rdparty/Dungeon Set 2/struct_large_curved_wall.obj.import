@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/struct_large_curved_wall.obj-0ec6f61fa81e40b6843cb7d4fce46af9.mesh"
+
+[deps]
+
+files=[ "res://.import/struct_large_curved_wall.obj-0ec6f61fa81e40b6843cb7d4fce46af9.mesh" ]
+
+source_file="res://objects/3rdparty/Dungeon Set 2/struct_large_curved_wall.obj"
+dest_files=[ "res://.import/struct_large_curved_wall.obj-0ec6f61fa81e40b6843cb7d4fce46af9.mesh", "res://.import/struct_large_curved_wall.obj-0ec6f61fa81e40b6843cb7d4fce46af9.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true

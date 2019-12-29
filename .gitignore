@@ -11,3 +11,11 @@ export.cfg
 
 .vscode/
 build/
+/vendor/
+/blender/
+/\!dev
+/packages/
+
+#Paket dependency manager
+# .paket/
+paket-files/

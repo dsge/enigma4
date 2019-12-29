@@ -1,0 +1,18 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/struct_floor_cracked_4.obj-499049f5435b5b21a9e11f17d19d84ed.mesh"
+
+[deps]
+
+files=[ "res://.import/struct_floor_cracked_4.obj-499049f5435b5b21a9e11f17d19d84ed.mesh" ]
+
+source_file="res://objects/3rdparty/Dungeon Set 2/struct_floor_cracked_4.obj"
+dest_files=[ "res://.import/struct_floor_cracked_4.obj-499049f5435b5b21a9e11f17d19d84ed.mesh", "res://.import/struct_floor_cracked_4.obj-499049f5435b5b21a9e11f17d19d84ed.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+optimize_mesh=true
