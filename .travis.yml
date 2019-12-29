@@ -6,6 +6,8 @@ services:
 before_install:
   - mkdir -p ${HOME}/github-builds/linux
   - mkdir -p ${HOME}/github-builds/windows
+  - echo $TRAVIS_BUILD_DIR
+  - ls $TRAVIS_BUILD_DIR
   - docker run --rm -it -v ${TRAVIS_BUILD_DIR}/:/app mono:6.6 mono /app/.paket/paket.exe restore
 script:
   - docker run \
