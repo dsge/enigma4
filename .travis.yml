@@ -8,19 +8,19 @@ before_install:
   - mkdir -p ${HOME}/github-builds/windows
   - echo $TRAVIS_BUILD_DIR
   - ls $TRAVIS_BUILD_DIR
-  - docker run --rm -it -v ${TRAVIS_BUILD_DIR}/:/app mono:6.6 mono /app/.paket/paket.exe restore
+  - docker run --rm -it -v ${TRAVIS_BUILD_DIR}/:/app mono:6.6 /bin/bash -c "cd /app/; mono ./.paket/paket.exe restore"
 script:
   - docker run \
       --rm \
       -it \
       -v ${TRAVIS_BUILD_DIR}:/app \
       -v ${HOME}/github-builds/windows/:/output \
-      gerx03/godot-mono-headless --path /app --export "Windows Desktop" /output/app.exe
+      gerx03/godot-mono-headless:3.2-beta4 --path /app --export "Windows Desktop" /output/app.exe
   - docker run \
       --rm \
       -it \
       -v ${TRAVIS_BUILD_DIR}:/app \
       -v ${HOME}/github-builds/windows/:/output \
-      gerx03/godot-mono-headless --path /app --export "Linux/X11" /output/app
+      gerx03/godot-mono-headless:3.2-beta4 --path /app --export "Linux/X11" /output/app
   - ls ${HOME}/github-builds/linux
   - ls ${HOME}/github-builds/windows
