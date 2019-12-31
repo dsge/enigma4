@@ -18,3 +18,18 @@ script:
   - docker run --rm -it -v ${TRAVIS_BUILD_DIR}:/app -v ${HOME}/github-builds/windows/:/output gerx03/godot-mono-headless:3.2-beta4 --path /app --export "Linux/X11" /output/app
   - ls ${HOME}/github-builds/linux
   - ls ${HOME}/github-builds/windows
+
+before_deploy:
+  # compress the built app for github releases
+  - cd ${HOME}/github-builds/windows && zip -r "$HOME/app-windows.zip" .
+  - cd ${HOME}/github-builds/linux && tar -zcvf "$HOME/app-linux.tar.gz" .
+deploy:
+  provider: releases
+  file: 
+    - "$HOME/app-linux.tar.gz"
+    - "$HOME/app-windows.zip"
+  skip_cleanup: true
+  on:
+    tags: true
+  api_key:
+    secure: $GITHUB_TOKEN
