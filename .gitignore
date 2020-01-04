@@ -17,5 +17,6 @@ build/
 /packages/
 
 #Paket dependency manager
-# .paket/
+.paket/**
+!.paket/paket.bootstrapper.exe
 paket-files/
