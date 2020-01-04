@@ -1,8 +1,4 @@
 
 
-
-
-
-
-
-https://godotsharp.net/how-to/debug-your-mono-godot-project/
+- `./.paket.bootstrapper.exe && chmod +x ./.paket/paket.exe`
+- `./.paket/paket.exe restore`
