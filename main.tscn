@@ -28,7 +28,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.97263 )
 script = ExtResource( 3 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/map/myGrid"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.80361, 0, 0 )
+transform = Transform( 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 1.80361, 0, -9 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/map/myGrid/StaticBody"]
 shape = SubResource( 2 )
