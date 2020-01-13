@@ -10,7 +10,7 @@ public class Main : Godot.Spatial
 
     public override void _Ready()
     {
-        this.mainCamera = (PlayerCamera)GetNode("Navigation/PlayerCharacter/Camera");
+        // this.mainCamera = (PlayerCamera)GetNode("Navigation/PlayerCharacter/Camera");
 
     }
 

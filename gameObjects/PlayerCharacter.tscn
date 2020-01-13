@@ -11,7 +11,6 @@ emission_on_uv2 = false
 [sub_resource type="CapsuleMesh" id=2]
 
 [sub_resource type="CapsuleShape" id=3]
-height = 0.01
 
 [sub_resource type="RayShape" id=4]
 
