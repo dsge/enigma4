@@ -2,7 +2,7 @@ using Godot;
 
 namespace App.Grid
 {
-    public class DummyBLock: GridCell {
+    public class DummyBlock: GridCell {
 
         protected new Vector3 size = new Vector3(1f, 1f, 1f);
         protected PackedScene prototype = (PackedScene)GD.Load("res://gameObjects/Grid/DummyBlock.tscn");
