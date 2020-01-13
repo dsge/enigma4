@@ -5,6 +5,7 @@ public class PlayerControls : KinematicBody
 {
     protected Vector3 linearVelocity = new Vector3(0f, 0f, 0f);
     protected float currentRollSpeed = 0f;
+    protected float maxRollSpeed = 0.05f;
     protected float speedMultiplier = 20f;
     public float mouseSensitivity = 0.002f;
 
@@ -22,14 +23,14 @@ public class PlayerControls : KinematicBody
 
     public override void _UnhandledKeyInput(InputEventKey @event) {
         if (@event.IsActionPressed("ui_roll_left")){
-            this.currentRollSpeed = -0.05f;
+            this.currentRollSpeed -= maxRollSpeed;
         } else if (@event.IsActionReleased("ui_roll_left")) {
-            this.currentRollSpeed = 0f;
+            this.currentRollSpeed += maxRollSpeed;
         }
         if (@event.IsActionPressed("ui_roll_right")){
-            this.currentRollSpeed = 0.05f;
+            this.currentRollSpeed += maxRollSpeed;
         } else if (@event.IsActionReleased("ui_roll_right")) {
-            this.currentRollSpeed = 0f;
+            this.currentRollSpeed -= maxRollSpeed;
         }
         if (@event.IsActionPressed("ui_forward")){
             this.linearVelocity += Vector3.Forward * speedMultiplier;
