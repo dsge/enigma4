@@ -20,10 +20,6 @@ run/main_scene="res://main.tscn"
 boot_splash/image="res://static/loading.png"
 config/icon="res://static/icon.png"
 
-[autoload]
-
-InventoryDragOverlay="*res://src/App/Inventory/InventoryDragOverlay.cs"
-
 [input]
 
 ui_left={
