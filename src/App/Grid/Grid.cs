@@ -13,6 +13,7 @@ namespace App.Grid
         public override void _Ready() {
 
             this.addCellAt(new DummyBLock(), new Vector3(3f, 0, 0));
+            this.addCellAt(new DummyBLock(), new Vector3(4f, 0, 0));
         }
 
         public void addCellAt(GridCell cell, Vector3 position) {
@@ -22,11 +23,11 @@ namespace App.Grid
         }
 
         public Vector3 mapToWorld(Vector3 gridCoordinates) {
-            return Vector3.Zero;
+            return gridCoordinates * this.cellSize;
         }
 
         public Vector3 worldToMap(Vector3 worldCoordinates) {
-            return Vector3.Zero;
+            return worldCoordinates / this.cellSize;
         }
     }
 }
