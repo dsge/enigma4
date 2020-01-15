@@ -6,6 +6,7 @@ namespace App.Grid
 
         protected Grid grid = null;
         protected Vector3 size = new Vector3(1f, 1f, 1f);
+        protected CellElectricity cellElectricity = null;
 
         public GridCell(Grid grid = null) {
             if (grid != null) {
@@ -13,8 +14,17 @@ namespace App.Grid
             }
         }
 
+        public void setCellElectricity(CellElectricity value) {
+            this.cellElectricity = value;
+        }
+
+        public CellElectricity getCellElectricity() {
+            return this.cellElectricity;
+        }
+
         public void setGrid(Grid value) {
             this.grid = value;
+            this.AddToGroup(value.getElectricSystem().getChildrenGroupId());
         }
 
         public Grid getGrid() {

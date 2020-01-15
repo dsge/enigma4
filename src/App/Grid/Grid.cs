@@ -9,8 +9,12 @@ namespace App.Grid
          */
         protected float cellSize = 2.5f;
 
+        protected GridElectricSystem electricSystem = null;
+
 
         public override void _Ready() {
+
+            this.setElectricSystem(new GridElectricSystem(this));
 
             this.addCellAt(new DummyBlock(), new Vector3(3f, 0, 0));
             this.addCellAt(new DummyBlock(), new Vector3(4f, 0, 0));
@@ -29,6 +33,18 @@ namespace App.Grid
 
         public Vector3 worldToMap(Vector3 worldCoordinates) {
             return worldCoordinates / this.cellSize;
+        }
+
+        public void setElectricSystem(GridElectricSystem value) {
+            if (this.electricSystem != null) {
+                this.RemoveChild(this.electricSystem);
+            }
+            this.electricSystem = value;
+            this.AddChild(this.electricSystem);
+        }
+
+        public GridElectricSystem getElectricSystem() {
+            return this.electricSystem;
         }
     }
 }
