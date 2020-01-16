@@ -10,6 +10,12 @@ namespace App.Grid
             this.AddChild(instance);
         }
 
-        public void activateManualThrust
+        public void activateManualThrust() {
+            // this.FindNode("MeshInstance2", false);
+        }
+
+        public void deactivateManualThrust() {
+
+        }
     }
 }
