@@ -19,6 +19,7 @@ namespace App.Grid
             this.addCellAt(new DummyBlock(), new Vector3(3f, 0, 0));
             this.addCellAt(new DummyBlock(), new Vector3(4f, 0, 0));
             this.addCellAt(new DummyBlock1x2(), new Vector3(3f, 0, 1f));
+            this.addCellAt(new ThrusterBlock(), new Vector3(5f, 0, 1f));
         }
 
         public void addCellAt(GridCell cell, Vector3 position) {
