@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="PrismMesh" id=1]
+left_to_right = 0.0
+size = Vector3( 2.5, 2.5, 2.5 )
+
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 0.5, 2, 2 )
+
+[node name="Cockpit" type="Spatial"]
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="MeshInstance" type="MeshInstance" parent="MeshInstance"]
+transform = Transform( 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = null
