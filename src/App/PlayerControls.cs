@@ -11,8 +11,6 @@ public class PlayerControls : KinematicBody
 
     public override void _UnhandledInput(InputEvent @event) {
 
-        var foo = new Newtonsoft.Json.JsonSerializer();
-
         if (@event is InputEventMouseMotion eventMouseMotion) {
             if (Input.GetMouseMode() == Input.MouseMode.Captured) {
                 /**

@@ -5,7 +5,7 @@ namespace App
 {
     public class PlayerCamera : Camera {
 
-        protected Vector3 temporaryTranslation = Vector3.Zero;
+        public Vector3 temporaryTranslation = Vector3.Zero;
 
         public void setTemporaryTranslation(Vector3 temporaryTranslation) {
             this.clearTemporaryTranslation();
