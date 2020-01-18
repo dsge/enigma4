@@ -10,6 +10,7 @@ public class PlayerControls : KinematicBody
     public float mouseSensitivity = 0.002f;
 
     public override void _UnhandledInput(InputEvent @event) {
+
         if (@event is InputEventMouseMotion eventMouseMotion) {
             if (Input.GetMouseMode() == Input.MouseMode.Captured) {
                 /**
