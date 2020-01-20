@@ -11,14 +11,16 @@ public class PlayerControls : KinematicBody
 
     public override void _UnhandledInput(InputEvent @event) {
 
-        if (@event is InputEventMouseMotion eventMouseMotion) {
-            if (Input.GetMouseMode() == Input.MouseMode.Captured) {
+        if (Input.GetMouseMode() == Input.MouseMode.Captured) {
+            if (@event is InputEventMouseMotion eventMouseMotion) {
                 /**
                  * turn the whole playerCharacter towards where we are looking
                  */
                 this.RotateObjectLocal(Vector3.Left, eventMouseMotion.Relative.y * mouseSensitivity); //x
                 this.RotateObjectLocal(Vector3.Down, eventMouseMotion.Relative.x * mouseSensitivity); //y
             }
+
+
         }
     }
 
