@@ -76,6 +76,11 @@ ui_roll_right={
 
 debugger_agent/port=55555
 
+[physics]
+
+3d/physics_engine="Bullet"
+
 [rendering]
 
+threads/thread_model=2
 environment/default_environment="res://default_env.tres"

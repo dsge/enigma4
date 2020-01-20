@@ -1,11 +1,37 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [sub_resource type="PrismMesh" id=1]
 left_to_right = 0.0
 size = Vector3( 2.5, 2.5, 2.5 )
 
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0.968627, 0.952941, 0.0235294, 1 )
+
 [sub_resource type="CubeMesh" id=2]
+material = SubResource( 6 )
 size = Vector3( 0.5, 2, 2 )
+
+[sub_resource type="ConcavePolygonShape" id=3]
+data = PoolVector3Array( -0.25, 1, 1, 0.25, 1, 1, -0.25, -1, 1, 0.25, 1, 1, 0.25, -1, 1, -0.25, -1, 1, 0.25, 1, -1, -0.25, 1, -1, 0.25, -1, -1, -0.25, 1, -1, -0.25, -1, -1, 0.25, -1, -1, 0.25, 1, 1, 0.25, 1, -1, 0.25, -1, 1, 0.25, 1, -1, 0.25, -1, -1, 0.25, -1, 1, -0.25, 1, -1, -0.25, 1, 1, -0.25, -1, -1, -0.25, 1, 1, -0.25, -1, 1, -0.25, -1, -1, 0.25, 1, 1, -0.25, 1, 1, 0.25, 1, -1, -0.25, 1, 1, -0.25, 1, -1, 0.25, 1, -1, -0.25, -1, 1, 0.25, -1, 1, -0.25, -1, -1, 0.25, -1, 1, 0.25, -1, -1, -0.25, -1, -1 )
+
+[sub_resource type="ConcavePolygonShape" id=4]
+data = PoolVector3Array( -1.25, 1.25, 1.25, 1.25, -1.25, 1.25, -1.25, -1.25, 1.25, -1.25, 1.25, -1.25, -1.25, -1.25, -1.25, 1.25, -1.25, -1.25, -1.25, 1.25, 1.25, -1.25, 1.25, -1.25, 1.25, -1.25, 1.25, -1.25, 1.25, -1.25, 1.25, -1.25, -1.25, 1.25, -1.25, 1.25, -1.25, 1.25, -1.25, -1.25, 1.25, 1.25, -1.25, -1.25, -1.25, -1.25, 1.25, 1.25, -1.25, -1.25, 1.25, -1.25, -1.25, -1.25, -1.25, -1.25, 1.25, 1.25, -1.25, 1.25, -1.25, -1.25, -1.25, 1.25, -1.25, 1.25, 1.25, -1.25, -1.25, -1.25, -1.25, -1.25 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "windowhighlight"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("MeshInstance/window:mesh:material:albedo_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.968627, 0.952941, 0.0235294, 1 ) ]
+}
 
 [node name="Cockpit" type="Spatial"]
 
@@ -13,7 +39,20 @@ size = Vector3( 0.5, 2, 2 )
 mesh = SubResource( 1 )
 material/0 = null
 
-[node name="MeshInstance" type="MeshInstance" parent="MeshInstance"]
+[node name="window" type="MeshInstance" parent="MeshInstance"]
 transform = Transform( 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="MeshInstance/window"]
+
+[node name="CollisionShape" type="CollisionShape" parent="MeshInstance/window/StaticBody"]
+shape = SubResource( 3 )
+
+[node name="StaticBody" type="StaticBody" parent="MeshInstance"]
+
+[node name="CollisionShape" type="CollisionShape" parent="MeshInstance/StaticBody"]
+shape = SubResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/windowhighlight = SubResource( 5 )
