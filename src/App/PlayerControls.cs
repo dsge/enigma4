@@ -9,6 +9,22 @@ public class PlayerControls : KinematicBody
     protected float speedMultiplier = 20f;
     public float mouseSensitivity = 0.002f;
 
+    protected PhysicsBody controlledObject = null;
+
+    public PhysicsBody getControlledObject() {
+        if (this.controlledObject == null) {
+            return this;
+        } else {
+            return this.controlledObject;
+        }
+    }
+
+    public void setControlledObject(PhysicsBody value = null) {
+        if (value == null) {
+
+        }
+    }
+
     public override void _UnhandledInput(InputEvent @event) {
 
         if (Input.GetMouseMode() == Input.MouseMode.Captured) {
