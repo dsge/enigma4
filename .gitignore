@@ -22,3 +22,4 @@ obj/
 .paket/**
 !.paket/paket.bootstrapper.exe
 paket-files/
+*.blob
