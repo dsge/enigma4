@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://gameObjects/PlayerCharacter.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/App/Grid/Grid.cs" type="Script" id=3]
@@ -8,32 +8,61 @@
 
 [sub_resource type="CubeMesh" id=2]
 
+[sub_resource type="OpenSimplexNoise" id=3]
+
+[sub_resource type="NoiseTexture" id=4]
+width = 128
+height = 128
+seamless = true
+noise = SubResource( 3 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.988235, 0.988235, 0.988235, 1 )
+albedo_texture = SubResource( 4 )
+
+[sub_resource type="PlaneMesh" id=6]
+material = SubResource( 5 )
+size = Vector2( 50, 50 )
+
+[sub_resource type="ConcavePolygonShape" id=7]
+data = PoolVector3Array( 25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0, -25, 25, 0, -25 )
+
 [node name="basenode" type="Spatial"]
 
 [node name="Navigation" type="Navigation" parent="."]
 
 [node name="PlayerCharacter" parent="Navigation" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0782628, 0.0455146, -0.163281 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0782628, 3.04551, -0.163281 )
 script = ExtResource( 4 )
 
 [node name="Camera" type="Camera" parent="Navigation/PlayerCharacter"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+far = 250.0
 
 [node name="map" type="Spatial" parent="Navigation"]
 
-[node name="myGrid" type="Spatial" parent="Navigation/map"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.97263 )
+[node name="myGrid" type="RigidBody" parent="Navigation/map"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -4.97263 )
 script = ExtResource( 3 )
 
-[node name="StaticBody" type="StaticBody" parent="Navigation/map/myGrid"]
-transform = Transform( 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 1.80361, 0, -9 )
+[node name="StaticBody" type="StaticBody" parent="Navigation/map"]
+transform = Transform( 0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 1.80361, 0, -13.9726 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Navigation/map/myGrid/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="Navigation/map/StaticBody"]
 shape = SubResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Navigation/map/myGrid/StaticBody"]
+[node name="MeshInstance" type="MeshInstance" parent="Navigation/map/StaticBody"]
 mesh = SubResource( 2 )
 material/0 = null
+
+[node name="MeshInstance" type="MeshInstance" parent="Navigation/map"]
+mesh = SubResource( 6 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="Navigation/map/MeshInstance"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Navigation/map/MeshInstance/StaticBody"]
+shape = SubResource( 7 )
 
 [node name="ImmediateGeometry" type="ImmediateGeometry" parent="."]
 

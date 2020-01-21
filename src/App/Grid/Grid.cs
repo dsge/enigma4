@@ -3,13 +3,19 @@ using Godot;
 namespace App.Grid
 {
 
-    public class Grid: Godot.Spatial {
+    public class Grid: Godot.RigidBody {
         /**
          * base size of the grid in ingame meters
          */
         protected float cellSize = 2.5f;
 
         protected GridElectricSystem electricSystem = null;
+        /**
+         * the "forward", "up" and "right" directions are decided by this cockpit
+         *
+         * this is just a cached value for getForwardTransform() so it does not have to iterate blocks in every frame
+         */
+        protected CockpitBlock forwardTransformCockpit = null;
 
 
         public override void _Ready() {
@@ -27,6 +33,10 @@ namespace App.Grid
             cell.Translation = this.mapToWorld(position);
             cell.setGrid(this);
             this.AddChild(cell);
+
+            if (cell is CockpitBlock cockpit) {
+                this.forwardTransformCockpit = cockpit;
+            }
         }
 
         public Vector3 mapToWorld(Vector3 gridCoordinates) {
@@ -47,6 +57,16 @@ namespace App.Grid
 
         public GridElectricSystem getElectricSystem() {
             return this.electricSystem;
+        }
+        /**
+         * tells us which way is "forward", "up", and "right" when controlling this grid
+         */
+        public Transform getForwardTransform() {
+            if (this.forwardTransformCockpit == null) {
+                return this.Transform;
+            } else {
+                return this.forwardTransformCockpit.Transform;
+            }
         }
     }
 }

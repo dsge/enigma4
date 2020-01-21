@@ -5,7 +5,7 @@ public class PlayerControls : KinematicBody
 {
     protected Vector3 linearVelocity = new Vector3(0f, 0f, 0f);
     protected float currentRollSpeed = 0f;
-    protected float maxRollSpeed = 0.05f;
+    protected float maxRollSpeed = 0.01f;
     protected float speedMultiplier = 20f;
     public float mouseSensitivity = 0.002f;
 
@@ -20,9 +20,7 @@ public class PlayerControls : KinematicBody
     }
 
     public void setControlledObject(PhysicsBody value = null) {
-        if (value == null) {
-
-        }
+        this.controlledObject = value;
     }
 
     public override void _UnhandledInput(InputEvent @event) {
@@ -90,21 +88,30 @@ public class PlayerControls : KinematicBody
             }
 
         }
+
+        if(@event.IsActionPressed("ui_use_activate")) {
+            if (this.getControlledObject() is KinematicBody) {
+                this.setControlledObject((RigidBody)this.GetNode("/root/basenode/Navigation/map/myGrid"));
+            } else {
+                this.setControlledObject(null);
+            }
+
+        }
     }
 
-    protected Vector3 getSlideDirection() {
+    protected Vector3 getSlideDirection(Spatial relativeToObject) {
         var ret = new Vector3();
 
         if (this.linearVelocity.z != 0f) { //forward and backward
-            ret += this.Transform.basis.z * this.linearVelocity.z;
+            ret += relativeToObject.Transform.basis.z * this.linearVelocity.z;
         }
 
         if (this.linearVelocity.x != 0f) { //left and right
-            ret -= this.Transform.basis.x * this.linearVelocity.x;
+            ret -= relativeToObject.Transform.basis.x * this.linearVelocity.x;
         }
 
         if (this.linearVelocity.y != 0f) { //up and down
-            ret += this.Transform.basis.y * this.linearVelocity.y;
+            ret += relativeToObject.Transform.basis.y * this.linearVelocity.y;
         }
 
         return ret;
@@ -112,10 +119,15 @@ public class PlayerControls : KinematicBody
 
     public override void _PhysicsProcess(float delta) {
         if (!this.linearVelocity.Equals(Vector3.Zero)) {
-            this.MoveAndSlide(this.getSlideDirection());
+            var controlledObject = this.getControlledObject();
+            if (controlledObject is KinematicBody kinematicBody) {
+                kinematicBody.MoveAndSlide(this.getSlideDirection(this));
+            } else if (controlledObject is RigidBody rigidBody) {
+                rigidBody.AddCentralForce(this.getSlideDirection(rigidBody));
+            }
         }
         if (this.currentRollSpeed != 0f) {
-            this.RotateObjectLocal(Vector3.Forward, this.currentRollSpeed);
+            this.getControlledObject().RotateObjectLocal(Vector3.Forward, this.currentRollSpeed);
         }
     }
 }
