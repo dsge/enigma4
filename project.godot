@@ -77,10 +77,6 @@ ui_use_activate={
  ]
 }
 
-[mono]
-
-debugger_agent/port=55555
-
 [physics]
 
 3d/physics_engine="Bullet"
